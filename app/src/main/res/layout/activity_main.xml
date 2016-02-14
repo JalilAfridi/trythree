@@ -1,0 +1,133 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivity"
+    >
+
+
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="210dp"
+        android:id="@+id/image"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="dx-"
+        android:id="@+id/Xn"
+        android:layout_centerVertical="true"
+        android:layout_alignParentStart="true"
+
+        />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="dy-"
+
+        android:id="@+id/Yn"
+        android:layout_alignTop="@+id/Xn"
+        android:layout_alignParentEnd="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="dx"
+        android:id="@+id/x"
+        android:layout_alignTop="@+id/Xn"
+        android:layout_toEndOf="@+id/Xn" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="dy"
+        android:id="@+id/y"
+        android:layout_alignBottom="@+id/Yn"
+        android:layout_toStartOf="@+id/Yn" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="A"
+        android:id="@+id/a"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="B"
+        android:id="@+id/b"
+        android:layout_alignTop="@+id/a"
+        android:layout_toStartOf="@+id/x" />
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/t1"
+        android:layout_above="@+id/a"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="39dp" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/red"
+        android:layout_below="@+id/Xn"
+        android:layout_alignParentStart="true"
+        android:layout_toStartOf="@+id/x" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/blue"
+        android:layout_alignTop="@+id/red"
+        android:layout_alignEnd="@+id/Yn"
+        android:layout_toEndOf="@+id/y" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/green"
+        android:layout_alignBottom="@+id/red"
+        android:layout_alignStart="@+id/x"
+        android:layout_alignEnd="@+id/x" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/redg"
+        android:layout_above="@+id/t1"
+        android:layout_alignParentStart="true"
+        android:layout_alignEnd="@+id/red" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/greeng"
+        android:layout_above="@+id/t1"
+        android:layout_alignStart="@+id/x"
+        android:layout_alignEnd="@+id/green" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/blueg"
+        android:layout_above="@+id/t1"
+        android:layout_alignStart="@+id/blue"
+        android:layout_alignEnd="@+id/blue" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="take Picture"
+        android:id="@+id/camer"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
+
+
+</RelativeLayout>

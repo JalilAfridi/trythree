@@ -9,6 +9,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.Html;
@@ -45,6 +46,7 @@ import java.util.List;
 import java.util.Vector;
 
 public class MainActivity extends Activity {
+    private static final int TAKE_PICTURE_REQUEST_B = 100;
     Button bx,bxn,by,byn,A,B;
     int[] khan = new int[15];
     Mat orignal;
@@ -89,6 +91,7 @@ public class MainActivity extends Activity {
         greenng = (EditText)findViewById(R.id.greeng);
         blueeg= (EditText)findViewById(R.id.blueg);
         dept = R.drawable.ban8;
+        int asay =0;
         try {
             copy= Utils.loadResource(MainActivity.this,dept, Imgcodecs.CV_LOAD_IMAGE_UNCHANGED);
         } catch (IOException e) {
@@ -101,8 +104,9 @@ public class MainActivity extends Activity {
 
                     @Override
                     public void onClick(View v) {
-                        Intent camerintent =  new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                        startActivityForResult(camerintent,10);
+                       // Intent camerintent =  new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                        Intent camerintent =  new Intent(MainActivity.this,CameraActivity.class);
+                        startActivityForResult(camerintent,100);
                     }
                 }
 
@@ -217,11 +221,40 @@ public class MainActivity extends Activity {
 
 
     }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == TAKE_PICTURE_REQUEST_B) {
+            Bitmap mCameraBitmap = null;
+            if (resultCode == RESULT_OK) {
+                // Recycle the previous bitmap.
+                if (mCameraBitmap != null) {
+                    mCameraBitmap.recycle();
+                    mCameraBitmap = null;
+                }
+                Bundle extras = data.getExtras();
+                mCameraBitmap = (Bitmap) extras.get("data");
+                byte[] cameraData = extras.getByteArray(CameraActivity.EXTRA_CAMERA_DATA);
+                if (cameraData != null) {
+                    mCameraBitmap = BitmapFactory.decodeByteArray(cameraData, 0, cameraData.length);
+                    Utils.bitmapToMat(mCameraBitmap, copy);
 
+                    Imgproc.cvtColor(copy,copy,Imgproc.COLOR_RGB2BGR);
+                    i2.setImageBitmap(mCameraBitmap);
 
+                }
+            } else {
+                mCameraBitmap = null;
+
+            }
+        }
+    }
+/*
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+
+
 
 
         Toast.makeText(MainActivity.this, "  load: ", Toast.LENGTH_SHORT).show();
@@ -235,7 +268,7 @@ public class MainActivity extends Activity {
 
 
     }
-
+*/
     int banana(){
         TextView t1 = (TextView)findViewById(R.id.t1);
         t1.setText(" y: " + dy);
@@ -759,12 +792,6 @@ public class MainActivity extends Activity {
         }
         return -1;
     }
-
-
-
-
-
-
 
     int carrot1(){
 

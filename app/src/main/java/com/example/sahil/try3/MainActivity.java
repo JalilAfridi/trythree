@@ -11,9 +11,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.text.Html;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,7 +18,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.opencv.core.MatOfInt;
 import org.opencv.core.MatOfPoint;
 import org.opencv.core.MatOfPoint2f;
 import org.opencv.core.MatOfRect;
@@ -32,18 +28,13 @@ import org.opencv.core.Size;
 import org.opencv.imgcodecs.*;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.objdetect.CascadeClassifier;
-import org.opencv.objdetect.Objdetect;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.Field;
-import java.nio.CharBuffer;
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 public class MainActivity extends Activity {
     private static final int TAKE_PICTURE_REQUEST_B = 100;
@@ -81,7 +72,7 @@ public class MainActivity extends Activity {
         bxn = (Button)findViewById(R.id.Xn);
         by = (Button)findViewById(R.id.y);
         byn = (Button)findViewById(R.id.Yn);
-        A = (Button)findViewById(R.id.a);
+        A = (Button)findViewById(R.id.updates);
         B = (Button)findViewById(R.id.b);
         i2 = (ImageView)findViewById(R.id.image);
         redd =(EditText)findViewById(R.id.red);
@@ -161,9 +152,14 @@ public class MainActivity extends Activity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+
+
+                        connection con = new connection();
+
+
                        // String ar[] = {" R.drawable.ban", " R.drawable.ban", " R.drawable.ban2"};
-                        try {
-                            if (cntr == 0) {
+
+                      /*    try {   if (cntr == 0) {
 
                                 Toast.makeText(MainActivity.this, ""+dept, Toast.LENGTH_SHORT).show();
 
@@ -176,7 +172,7 @@ public class MainActivity extends Activity {
                             e.printStackTrace();
                         }
 
-
+*/
                     }
                 }
 

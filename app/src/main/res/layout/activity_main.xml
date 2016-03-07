@@ -62,8 +62,8 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="A"
-        android:id="@+id/a"
+        android:text="Check Updates"
+        android:id="@+id/updates"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:background="#7f8e72"
@@ -74,7 +74,7 @@
         android:layout_height="wrap_content"
         android:text="B"
         android:id="@+id/b"
-        android:layout_alignTop="@+id/a"
+        android:layout_alignTop="@+id/updates"
         android:layout_toStartOf="@+id/x"
         android:background="#7f8e72"
         android:backgroundTint="#7fb9a6" />
@@ -84,7 +84,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/t1"
         android:layout_marginBottom="41dp"
-        android:layout_above="@+id/a"
+        android:layout_above="@+id/updates"
         android:layout_alignParentEnd="true" />
 
     <EditText

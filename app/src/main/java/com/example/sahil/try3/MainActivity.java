@@ -11,6 +11,8 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -38,7 +40,7 @@ import java.util.List;
 
 public class MainActivity extends Activity {
     private static final int TAKE_PICTURE_REQUEST_B = 100;
-    Button bx,bxn,by,byn,A,B;
+    Button bx,bxn,by,byn,A,B,display;
     int[] khan = new int[15];
     Mat orignal;
     Mat filter;
@@ -55,7 +57,7 @@ public class MainActivity extends Activity {
     private ImageView mImageView;
     String scolor = "noCOlor";
     Button camera;
-
+    single dbaccess = single.getInstance();
 
 
     static {
@@ -68,6 +70,7 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        display = (Button)findViewById(R.id.display);
         bx = (Button)findViewById(R.id.x);
         bxn = (Button)findViewById(R.id.Xn);
         by = (Button)findViewById(R.id.y);
@@ -139,7 +142,7 @@ public class MainActivity extends Activity {
                     @Override
                     public void onClick(View v) {
                         try {
-                            copy = Utils.loadResource(MainActivity.this, R.drawable.pveg, Imgcodecs.CV_LOAD_IMAGE_UNCHANGED);
+                            copy = Utils.loadResource(MainActivity.this, R.drawable.ban8, Imgcodecs.CV_LOAD_IMAGE_UNCHANGED);
                             dy--;
                         }catch (Exception e){
 
@@ -154,7 +157,21 @@ public class MainActivity extends Activity {
                     public void onClick(View v) {
 
 
-                        connection con = new connection();
+                        final connection con = new connection();
+                        con.startconnection();
+                        final TextView t1 = (TextView)findViewById(R.id.rawdata);
+
+                        new CountDownTimer(3000, 1000) {
+                            @Override
+                            public void onTick(long millisUntilFinished) {
+
+                            }
+
+                            public void onFinish() {
+                                // When timer is finished
+                                t1.setText(con.string);
+                            }
+                        }.start();
 
 
                        // String ar[] = {" R.drawable.ban", " R.drawable.ban", " R.drawable.ban2"};
@@ -178,22 +195,28 @@ public class MainActivity extends Activity {
 
         );
 
+        display.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent i = new Intent(MainActivity.this,display_item.class);
+                startActivity(i);
+            }
+        });
+
         B.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         single database=single.getInstance();
                         int carrotFlag =0; //carrot();
-                      int banFlag =  banana();
+                      int banFlag =  banana1();
 
                     int pumpkinFlag = 0;//pumpkin();
                      int cucumberFlag =0; //cucumber();
 
-                            if (banFlag==1) {
-                                database.datahub.itemslist.add("banana");
-                                database.datahub.itemsrates.add("25.0 rs");
-                            }
-                        TextView t1 = (TextView)findViewById(R.id.t1);
+
+                        TextView t1 = (TextView)findViewById(R.id.rawdata);
                         t1.setText(" ban: " + banFlag+ " carrot: "+carrotFlag+" pumpkin "+pumpkinFlag+" cucumber "+cucumberFlag );
 
                     //  Intent i = new Intent(MainActivity.this,display_item.class);
@@ -265,8 +288,94 @@ public class MainActivity extends Activity {
 
     }
 */
+
+    int banana1(){
+
+        try{
+            Mat fulhsv = copy.clone();
+            Imgproc.cvtColor(copy, fulhsv, Imgproc.COLOR_BGR2HSV_FULL);
+
+            Scalar min  = new Scalar(10,80,200);
+            Scalar max  = new Scalar(40,200,256);
+
+            Core.inRange(fulhsv, min, max, fulhsv);
+
+            Imgproc.Canny(fulhsv, fulhsv, 200, 50);
+            Imgproc.GaussianBlur(fulhsv, fulhsv, new Size(5, 5), 5);
+            List<MatOfPoint> contours = new ArrayList<MatOfPoint>();
+            Imgproc.findContours(fulhsv, contours, new Mat(), Imgproc.RETR_LIST, Imgproc.CHAIN_APPROX_SIMPLE);
+            MatOfPoint firstcountour=contours.get(0);
+            double areaofcontour = Imgproc.contourArea(firstcountour);
+
+            Rect boundingrect=Imgproc.boundingRect(firstcountour);;
+            double wedth ;
+            double hieght;
+            double ratio = 0 ;
+            int counter =0;
+            double db=0.0;
+            //checking for banana only
+            for(int i=0;i<contours.size();i++){
+
+                areaofcontour = Imgproc.contourArea(contours.get(i));
+                wedth =   boundingrect.width;
+                hieght = boundingrect.height;
+
+
+                if(wedth>hieght){
+
+                    ratio=wedth/hieght;
+                }else{
+                    ratio=hieght/wedth;
+
+                }
+
+                if(areaofcontour>1000&&ratio>1.3){
+
+                    firstcountour = contours.get(i);
+                    boundingrect = Imgproc.boundingRect(firstcountour);
+
+                    MatOfPoint2f m2 = new MatOfPoint2f(firstcountour.toArray());
+
+
+                    db = Imgproc.arcLength(m2, true);
+                    scolor="yellow";
+                    Toast.makeText(MainActivity.this, "yellow done", Toast.LENGTH_SHORT).show();
+                    break;
+                }
+
+
+            }
+
+            finaltest(ratio,areaofcontour);
+
+            ArrayList<MatOfPoint> largest_contours = new ArrayList<MatOfPoint>();
+            largest_contours.add(firstcountour);
+
+
+            Imgproc.cvtColor(gray, gray, Imgproc.COLOR_BayerBG2RGB);
+            Imgproc.drawContours(orignal, largest_contours, -1, new Scalar(255, 255, 0), 1);
+
+
+            Bitmap img2 = Bitmap.createBitmap(fulhsv.cols(), fulhsv.rows(), Bitmap.Config.ARGB_8888);
+            Utils.matToBitmap(fulhsv, img2);
+            i2.setImageBitmap(img2);
+            Toast.makeText(MainActivity.this, " image displayed ", Toast.LENGTH_SHORT).show();
+
+
+
+        }catch(Exception e){
+            e.printStackTrace();
+            Toast.makeText(MainActivity.this, "Excption", Toast.LENGTH_SHORT).show();
+        }
+
+
+        return 0;
+    }
+
+
+
     int banana(){
-        TextView t1 = (TextView)findViewById(R.id.t1);
+        TextView t1 = (TextView)findViewById(R.id.rawdata);
         t1.setText(" y: " + dy);
 
         try{
@@ -528,7 +637,7 @@ public class MainActivity extends Activity {
         return -1;
     }
     int carrot(){
-        TextView t1 = (TextView)findViewById(R.id.t1);
+        TextView t1 = (TextView)findViewById(R.id.rawdata);
         t1.setText(" y: " + dy);
 
         try{
@@ -791,7 +900,7 @@ public class MainActivity extends Activity {
 
     int carrot1(){
 
-        TextView t1 = (TextView)findViewById(R.id.t1);
+        TextView t1 = (TextView)findViewById(R.id.rawdata);
         t1.setText(" y: " + dy );
         try {
 
@@ -852,7 +961,7 @@ public class MainActivity extends Activity {
 
 
             Mat fulhsv =new Mat();
-            Imgproc.cvtColor(orignal,orignal,Imgproc.COLOR_BGR2RGB);
+            Imgproc.cvtColor(orignal, orignal, Imgproc.COLOR_BGR2RGB);
             Imgproc.cvtColor(orignal, fulhsv, Imgproc.COLOR_RGB2HSV);
 
             double[] hsv = fulhsv.get(py,px);
@@ -1030,7 +1139,7 @@ public class MainActivity extends Activity {
     }
     int pumpkin(){
 
-        TextView t1 = (TextView)findViewById(R.id.t1);
+        TextView t1 = (TextView)findViewById(R.id.rawdata);
         t1.setText(" y: " + dy );
         try {
 
@@ -1266,7 +1375,7 @@ public class MainActivity extends Activity {
     }
     int cucumber(){
 
-        TextView t1 = (TextView)findViewById(R.id.t1);
+        TextView t1 = (TextView)findViewById(R.id.rawdata);
         t1.setText(" y: " + dy );
         try {
 
@@ -1511,7 +1620,7 @@ public class MainActivity extends Activity {
   int potato(){
 
 
-      TextView t1 = (TextView)findViewById(R.id.t1);
+      TextView t1 = (TextView)findViewById(R.id.rawdata);
       t1.setText(" y: " + dy);
       try {
 
@@ -1861,6 +1970,74 @@ try {
     }
 
 
+
+
+    int finaltest(double ratio, double areaofcontour){
+
+        if(ratio<1.3&&areaofcontour>1000){
+            Acircle circlobject = new Acircle();
+            if(scolor.equalsIgnoreCase("red")){
+                String vegname= circlobject.red();
+                Toast.makeText(MainActivity.this, ""+vegname, Toast.LENGTH_SHORT).show();
+
+            }else if(scolor.equalsIgnoreCase("green")){
+                String vegname= circlobject.red();
+                Toast.makeText(MainActivity.this, ""+vegname, Toast.LENGTH_SHORT).show();
+
+            }else if(scolor.equalsIgnoreCase("white")){
+                String vegname= circlobject.red();
+                Toast.makeText(MainActivity.this, ""+vegname, Toast.LENGTH_SHORT).show();
+
+            }else if(scolor.equalsIgnoreCase("brown")){
+                String vegname= circlobject.red();
+                Toast.makeText(MainActivity.this, ""+vegname, Toast.LENGTH_SHORT).show();
+
+            }else if(scolor.equalsIgnoreCase("whitegreen")){
+                String vegname= circlobject.red();
+                Toast.makeText(MainActivity.this, ""+vegname, Toast.LENGTH_SHORT).show();
+
+            }else {
+                Toast.makeText(MainActivity.this, " something else ", Toast.LENGTH_SHORT).show();
+            }
+
+
+        }else if(ratio>1.3&&areaofcontour>1000){
+
+            Blong longObject = new Blong();
+            if(scolor.equalsIgnoreCase("yellow")){
+                String vegname= longObject.yellow();
+                Toast.makeText(MainActivity.this, ""+vegname, Toast.LENGTH_SHORT).show();
+
+                Bitmap img2 = Bitmap.createBitmap(orignal.cols(), orignal.rows(), Bitmap.Config.ARGB_8888);
+                Utils.matToBitmap(orignal, img2);
+                i2.setImageBitmap(img2);
+
+                return 1;
+            }else if(scolor.equalsIgnoreCase("red")){
+                String vegname= longObject.red();
+                Toast.makeText(MainActivity.this, ""+vegname, Toast.LENGTH_SHORT).show();
+
+            }else if(scolor.equalsIgnoreCase("lightgreen")){
+                String vegname= longObject.red();
+                Toast.makeText(MainActivity.this, ""+vegname, Toast.LENGTH_SHORT).show();
+
+            }else if(scolor.equalsIgnoreCase("darkgreen")){
+                String vegname= longObject.red();
+                Toast.makeText(MainActivity.this, ""+vegname, Toast.LENGTH_SHORT).show();
+
+            }else if(scolor.equalsIgnoreCase("purple")){
+                String vegname= longObject.red();
+                Toast.makeText(MainActivity.this, ""+vegname, Toast.LENGTH_SHORT).show();
+
+            }else {
+                Toast.makeText(MainActivity.this, " something else! ", Toast.LENGTH_SHORT).show();
+            }
+
+
+        }
+
+        return  0;
+    }
 
 
 }

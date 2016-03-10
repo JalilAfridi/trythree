@@ -29,11 +29,11 @@ public class display_item extends Activity {
 
 
         //displaying the list of items  on listview
-        ListAdapter = new ArrayAdapter<String>(this,android.R.layout.select_dialog_multichoice, itemsName);
+        ListAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, itemsName);
         detecteditemslist.setAdapter(ListAdapter);
 
         //displaying the list of items rates on listview
-        ListAdapter = new ArrayAdapter<String>(this,android.R.layout.select_dialog_multichoice, itemsRates);
+        ListAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, itemsRates);
         detecteditemsRates.setAdapter(ListAdapter);
 
 

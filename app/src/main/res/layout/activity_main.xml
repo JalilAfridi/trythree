@@ -82,10 +82,10 @@
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/t1"
+        android:id="@+id/rawdata"
         android:layout_marginBottom="41dp"
         android:layout_above="@+id/updates"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignEnd="@+id/camer" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -115,7 +115,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/redg"
-        android:layout_above="@+id/t1"
+        android:layout_above="@+id/rawdata"
         android:layout_alignParentStart="true"
         android:layout_alignEnd="@+id/red" />
 
@@ -123,7 +123,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/greeng"
-        android:layout_above="@+id/t1"
+        android:layout_above="@+id/rawdata"
         android:layout_alignStart="@+id/x"
         android:layout_alignEnd="@+id/green" />
 
@@ -131,7 +131,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/blueg"
-        android:layout_above="@+id/t1"
+        android:layout_above="@+id/rawdata"
         android:layout_alignStart="@+id/blue"
         android:layout_alignEnd="@+id/blue" />
 
@@ -144,6 +144,17 @@
         android:layout_centerHorizontal="true"
         android:background="#7f8e72"
         android:backgroundTint="#7fb9a6" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Display"
+        android:id="@+id/display"
+        android:layout_below="@+id/blueg"
+        android:layout_alignStart="@+id/updates"
+        android:background="#7f8e72"
+        android:backgroundTint="#7fb9a6"
+        android:layout_alignParentEnd="true" />
 
 
 </RelativeLayout>

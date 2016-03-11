@@ -211,7 +211,7 @@ public class CameraActivity extends Activity implements PictureCallback, Surface
                 if (mIsCapturing) {
                     parameters = mCamera.getParameters();
                     //parameters.setPictureSize( 1280,720 );
-                    parameters.setZoom(zoom);
+                 // parameters.setZoom(zoom);
                     parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
                     mCamera.setParameters(parameters);
                     mCamera.startPreview();

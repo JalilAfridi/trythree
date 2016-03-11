@@ -14,9 +14,12 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,6 +43,11 @@ import java.util.List;
 
 public class MainActivity extends Activity {
     private static final int TAKE_PICTURE_REQUEST_B = 100;
+    Spinner spinner ;
+    ArrayList<String> items ;
+    int position1 = 0;
+
+
     Button bx,bxn,by,byn,A,B,display;
     int[] khan = new int[15];
     Mat orignal;
@@ -84,7 +92,28 @@ public class MainActivity extends Activity {
         reddg =(EditText)findViewById(R.id.redg);
         greenng = (EditText)findViewById(R.id.greeng);
         blueeg= (EditText)findViewById(R.id.blueg);
-        dept = R.drawable.ban8;
+        spinner = (Spinner)findViewById(R.id.spinner);
+        ArrayAdapter<String> adp1=new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_1,dbaccess.datahub.getItemslist());
+        adp1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adp1);
+        items = dbaccess.datahub.getItemslist();
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+                                              @Override
+                                              public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long id) {
+                                                  position1 = position;
+
+
+                                              }
+
+                                              @Override
+                                              public void onNothingSelected(AdapterView<?> parent) {
+
+                                              }
+
+                                          });
+            dept = R.drawable.ban8;
         int asay =0;
         try {
             copy= Utils.loadResource(MainActivity.this,dept, Imgcodecs.CV_LOAD_IMAGE_UNCHANGED);
@@ -142,7 +171,7 @@ public class MainActivity extends Activity {
                     @Override
                     public void onClick(View v) {
                         try {
-                            copy = Utils.loadResource(MainActivity.this, R.drawable.ban8, Imgcodecs.CV_LOAD_IMAGE_UNCHANGED);
+                            copy = Utils.loadResource(MainActivity.this, dept, Imgcodecs.CV_LOAD_IMAGE_UNCHANGED);
                             dy--;
                         }catch (Exception e){
 
@@ -208,9 +237,24 @@ public class MainActivity extends Activity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        single database=single.getInstance();
-                        int carrotFlag =0; //carrot();
-                      int banFlag =  banana1();
+                        int banFlag=0;
+                        int carrotFlag=0;
+                       if( items.get(position1).equalsIgnoreCase("banana")){
+
+                           banFlag = banana1();
+                       }else  if( items.get(position1).equalsIgnoreCase("carrot")){
+
+
+                           carrotFlag = carrott();
+                       }else if (items.get(position1).equalsIgnoreCase("potato")){
+
+                           int potatoFlag =  potato();
+
+                        }else {
+                           Toast.makeText(MainActivity.this, "select an item from the list", Toast.LENGTH_SHORT).show();
+                       }
+
+
 
                     int pumpkinFlag = 0;//pumpkin();
                      int cucumberFlag =0; //cucumber();
@@ -222,7 +266,7 @@ public class MainActivity extends Activity {
                     //  Intent i = new Intent(MainActivity.this,display_item.class);
 
                      //  startActivity(i);
-                     // int potatoFlag =  potato();
+                     //
 
                         //haarcascad();
 
@@ -299,12 +343,18 @@ public class MainActivity extends Activity {
             Scalar max  = new Scalar(40,200,256);
 
             Core.inRange(fulhsv, min, max, fulhsv);
-
+            orignal = fulhsv.clone();
             Imgproc.Canny(fulhsv, fulhsv, 200, 50);
             Imgproc.GaussianBlur(fulhsv, fulhsv, new Size(5, 5), 5);
             List<MatOfPoint> contours = new ArrayList<MatOfPoint>();
             Imgproc.findContours(fulhsv, contours, new Mat(), Imgproc.RETR_LIST, Imgproc.CHAIN_APPROX_SIMPLE);
-            MatOfPoint firstcountour=contours.get(0);
+            MatOfPoint firstcountour=null;
+            try {
+                firstcountour = contours.get(0);
+            }catch (Exception e){
+
+                Toast.makeText(MainActivity.this, "Please take picture from different Angle", Toast.LENGTH_LONG).show();
+            }
             double areaofcontour = Imgproc.contourArea(firstcountour);
 
             Rect boundingrect=Imgproc.boundingRect(firstcountour);;
@@ -347,17 +397,116 @@ public class MainActivity extends Activity {
             }
 
             finaltest(ratio,areaofcontour);
-
-            ArrayList<MatOfPoint> largest_contours = new ArrayList<MatOfPoint>();
-            largest_contours.add(firstcountour);
+            try {
+                ArrayList<MatOfPoint> largest_contours = new ArrayList<MatOfPoint>();
+                largest_contours.add(firstcountour);
 
 
             Imgproc.cvtColor(gray, gray, Imgproc.COLOR_BayerBG2RGB);
             Imgproc.drawContours(orignal, largest_contours, -1, new Scalar(255, 255, 0), 1);
 
 
-            Bitmap img2 = Bitmap.createBitmap(fulhsv.cols(), fulhsv.rows(), Bitmap.Config.ARGB_8888);
-            Utils.matToBitmap(fulhsv, img2);
+        }catch(Exception e){
+
+        }
+
+            Bitmap img2 = Bitmap.createBitmap(orignal.cols(), orignal.rows(), Bitmap.Config.ARGB_8888);
+            Utils.matToBitmap(orignal, img2);
+            i2.setImageBitmap(img2);
+            Toast.makeText(MainActivity.this, " image displayed ", Toast.LENGTH_SHORT).show();
+
+
+
+        }catch(Exception e){
+            e.printStackTrace();
+            Toast.makeText(MainActivity.this, "Excption", Toast.LENGTH_SHORT).show();
+        }
+
+
+        return 0;
+    }
+
+    int carrott(){
+
+        try{
+            Mat fulhsv = copy.clone();
+            Imgproc.cvtColor(copy, fulhsv, Imgproc.COLOR_BGR2HSV_FULL);
+
+
+            Scalar min  = new Scalar(2,120,200);
+            Scalar max  = new Scalar(10,170,256);
+
+
+            Core.inRange(fulhsv, min, max, fulhsv);
+            orignal = fulhsv.clone();
+            Imgproc.Canny(fulhsv, fulhsv, 200, 50);
+            Imgproc.GaussianBlur(fulhsv, fulhsv, new Size(5, 5), 5);
+            List<MatOfPoint> contours = new ArrayList<MatOfPoint>();
+            Imgproc.findContours(fulhsv, contours, new Mat(), Imgproc.RETR_LIST, Imgproc.CHAIN_APPROX_SIMPLE);
+            MatOfPoint firstcountour=null;
+            try {
+                firstcountour = contours.get(0);
+            }catch (Exception e){
+
+                Toast.makeText(MainActivity.this, "Please take picture from different Angle", Toast.LENGTH_LONG).show();
+            }
+            double areaofcontour = Imgproc.contourArea(firstcountour);
+
+            Rect boundingrect=Imgproc.boundingRect(firstcountour);;
+            double wedth ;
+            double hieght;
+            double ratio = 0 ;
+            int counter =0;
+            double db=0.0;
+            //checking for banana only
+            for(int i=0;i<contours.size();i++){
+
+                areaofcontour = Imgproc.contourArea(contours.get(i));
+                wedth =   boundingrect.width;
+                hieght = boundingrect.height;
+
+
+                if(wedth>hieght){
+
+                    ratio=wedth/hieght;
+                }else{
+                    ratio=hieght/wedth;
+
+                }
+
+                if(areaofcontour>1000&&ratio>1.3){
+
+                    firstcountour = contours.get(i);
+                    boundingrect = Imgproc.boundingRect(firstcountour);
+
+                    MatOfPoint2f m2 = new MatOfPoint2f(firstcountour.toArray());
+
+
+                    db = Imgproc.arcLength(m2, true);
+                    scolor="red";
+                    Toast.makeText(MainActivity.this, "red done", Toast.LENGTH_SHORT).show();
+                    break;
+                }
+
+
+            }
+
+            finaltest(ratio,areaofcontour);
+            try {
+                ArrayList<MatOfPoint> largest_contours = new ArrayList<MatOfPoint>();
+                largest_contours.add(firstcountour);
+
+
+                Imgproc.cvtColor(gray, gray, Imgproc.COLOR_BayerBG2RGB);
+                Imgproc.drawContours(orignal, largest_contours, -1, new Scalar(255, 255, 0), 1);
+
+
+            }catch(Exception e){
+
+            }
+
+            Bitmap img2 = Bitmap.createBitmap(orignal.cols(), orignal.rows(), Bitmap.Config.ARGB_8888);
+            Utils.matToBitmap(orignal, img2);
             i2.setImageBitmap(img2);
             Toast.makeText(MainActivity.this, " image displayed ", Toast.LENGTH_SHORT).show();
 
@@ -373,8 +522,7 @@ public class MainActivity extends Activity {
     }
 
 
-
-    int banana(){
+    int bananaold(){
         TextView t1 = (TextView)findViewById(R.id.rawdata);
         t1.setText(" y: " + dy);
 
@@ -636,7 +784,7 @@ public class MainActivity extends Activity {
 
         return -1;
     }
-    int carrot(){
+    int carrotold(){
         TextView t1 = (TextView)findViewById(R.id.rawdata);
         t1.setText(" y: " + dy);
 
@@ -898,7 +1046,7 @@ public class MainActivity extends Activity {
         return -1;
     }
 
-    int carrot1(){
+    int carrot1old(){
 
         TextView t1 = (TextView)findViewById(R.id.rawdata);
         t1.setText(" y: " + dy );

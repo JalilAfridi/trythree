@@ -156,5 +156,12 @@
         android:backgroundTint="#7fb9a6"
         android:layout_alignParentEnd="true" />
 
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinner"
+        android:layout_above="@+id/rawdata"
+        android:layout_toEndOf="@+id/greeng" />
+
 
 </RelativeLayout>

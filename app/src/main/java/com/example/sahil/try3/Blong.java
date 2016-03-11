@@ -7,7 +7,7 @@ public class Blong {
 
     String red () {
 
-        return "gajar";
+        return "carrot";
     }
 
 

@@ -53,12 +53,13 @@ public class MainActivity extends Activity {
     Mat orignal;
     Mat filter;
     Mat graydst;
+    Mat copy ;
+    Mat gray ;
     ImageView i,i2;
     int dx=0,dy=0,dept=1,cntr=0,found=-1;
     double red=0,green=0,blue=0,redg=0,greeng=0,blueg=0;
     EditText  redd,greenn,bluee,reddg,greenng,blueeg;
-    Mat copy ;
-    Mat gray ;
+
     static final int REQUEST_IMAGE_CAPTURE = 1;
     private Bitmap mImageBitmap;
     private String mCurrentPhotoPath;
@@ -93,6 +94,16 @@ public class MainActivity extends Activity {
         greenng = (EditText)findViewById(R.id.greeng);
         blueeg= (EditText)findViewById(R.id.blueg);
         spinner = (Spinner)findViewById(R.id.spinner);
+
+        redd.setVisibility(View.INVISIBLE);
+        greenn.setVisibility(View.INVISIBLE);
+        bluee.setVisibility(View.INVISIBLE);
+        reddg.setVisibility(View.INVISIBLE);
+        greenng.setVisibility(View.INVISIBLE);
+        blueeg.setVisibility(View.INVISIBLE);
+
+
+
         ArrayAdapter<String> adp1=new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1,dbaccess.datahub.getItemslist());
         adp1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -171,7 +182,9 @@ public class MainActivity extends Activity {
                     @Override
                     public void onClick(View v) {
                         try {
-                            copy = Utils.loadResource(MainActivity.this, dept, Imgcodecs.CV_LOAD_IMAGE_UNCHANGED);
+
+                      //    copy = Utils.loadResource(MainActivity.this, R.drawable.ban2, Imgcodecs.CV_LOAD_IMAGE_UNCHANGED);
+
                             dy--;
                         }catch (Exception e){
 
@@ -228,7 +241,7 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
 
-                Intent i = new Intent(MainActivity.this,display_item.class);
+                Intent i = new Intent(MainActivity.this,Main2Activity.class);
                 startActivity(i);
             }
         });
@@ -260,8 +273,8 @@ public class MainActivity extends Activity {
                      int cucumberFlag =0; //cucumber();
 
 
-                        TextView t1 = (TextView)findViewById(R.id.rawdata);
-                        t1.setText(" ban: " + banFlag+ " carrot: "+carrotFlag+" pumpkin "+pumpkinFlag+" cucumber "+cucumberFlag );
+  //                      TextView t1 = (TextView)findViewById(R.id.rawdata);
+//                        t1.setText(" ban: " + banFlag+ " carrot: "+carrotFlag+" pumpkin "+pumpkinFlag+" cucumber "+cucumberFlag );
 
                     //  Intent i = new Intent(MainActivity.this,display_item.class);
 
@@ -333,22 +346,44 @@ public class MainActivity extends Activity {
     }
 */
 
-    int banana1(){
+             int banana1(){
 
-        try{
-            Mat fulhsv = copy.clone();
-            Imgproc.cvtColor(copy, fulhsv, Imgproc.COLOR_BGR2HSV_FULL);
+                try{
+                    Mat fulhsv = copy.clone();
 
-            Scalar min  = new Scalar(10,80,200);
-            Scalar max  = new Scalar(40,200,256);
+                    Imgproc.cvtColor(copy, fulhsv, Imgproc.COLOR_BGR2HSV_FULL);
 
-            Core.inRange(fulhsv, min, max, fulhsv);
-            orignal = fulhsv.clone();
-            Imgproc.Canny(fulhsv, fulhsv, 200, 50);
-            Imgproc.GaussianBlur(fulhsv, fulhsv, new Size(5, 5), 5);
-            List<MatOfPoint> contours = new ArrayList<MatOfPoint>();
-            Imgproc.findContours(fulhsv, contours, new Mat(), Imgproc.RETR_LIST, Imgproc.CHAIN_APPROX_SIMPLE);
-            MatOfPoint firstcountour=null;
+                    Scalar min  = new Scalar(10,80,200);
+                    Scalar max  = new Scalar(40,200,256);
+
+                    Core.inRange(fulhsv, min, max, fulhsv);
+
+                    Imgproc.Canny(fulhsv, fulhsv, 10, 50);
+                    Imgproc.GaussianBlur(fulhsv, fulhsv, new Size(5, 5), 5);
+                    orignal = fulhsv.clone();
+                    List<MatOfPoint> contours = new ArrayList<MatOfPoint>();
+                    List<MatOfPoint> filteredcontours = new ArrayList<MatOfPoint>();
+
+                    Imgproc.findContours(fulhsv, contours, new Mat(), Imgproc.RETR_LIST, Imgproc.CHAIN_APPROX_SIMPLE);
+                    MatOfPoint firstcountour=null;
+
+                    for(int i=0;i<contours.size();i++){
+
+                        if(Imgproc.contourArea(contours.get(i))>1000){
+                            filteredcontours.add(contours.get(i));
+                        }
+
+                    }
+
+
+            double confidancelevel = Imgproc.matchShapes(contours.get(dy),contours.get(dx) , Imgproc.CV_CONTOURS_MATCH_I1, 1);
+
+
+            TextView rawdata = (TextView) findViewById(R.id.rawdata);
+
+            rawdata.setText("confidance: " + confidancelevel);
+
+/*
             try {
                 firstcountour = contours.get(0);
             }catch (Exception e){
@@ -397,20 +432,24 @@ public class MainActivity extends Activity {
             }
 
             finaltest(ratio,areaofcontour);
+
+            */
+
             try {
                 ArrayList<MatOfPoint> largest_contours = new ArrayList<MatOfPoint>();
-                largest_contours.add(firstcountour);
+                largest_contours.add(filteredcontours.get(dy));
+                largest_contours.add(filteredcontours.get(dx));
+
+                Imgproc.drawContours(orignal, largest_contours, -1, new Scalar(255, 255, 0), 1);
 
 
-            Imgproc.cvtColor(gray, gray, Imgproc.COLOR_BayerBG2RGB);
-            Imgproc.drawContours(orignal, largest_contours, -1, new Scalar(255, 255, 0), 1);
 
 
         }catch(Exception e){
 
         }
 
-            Bitmap img2 = Bitmap.createBitmap(orignal.cols(), orignal.rows(), Bitmap.Config.ARGB_8888);
+            Bitmap img2 = Bitmap.createBitmap(fulhsv.cols(), fulhsv.rows(), Bitmap.Config.ARGB_8888);
             Utils.matToBitmap(orignal, img2);
             i2.setImageBitmap(img2);
             Toast.makeText(MainActivity.this, " image displayed ", Toast.LENGTH_SHORT).show();

@@ -12,6 +12,7 @@
     <string name="title_activity_activity_camera">activity_camera</string>
 
 
-
     <string name="title_activity_display_item">display_item</string>
+    <string name="title_activity_programlist">programlist</string>
+    <string name="title_activity_main2">Item`s Grid View</string>
 </resources>

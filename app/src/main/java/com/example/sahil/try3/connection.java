@@ -12,7 +12,7 @@ import java.util.Random;
 
 public class connection
 {
-    String username, address = "192.168.10.2";
+    String username, address = "192.168.10.14";
     ArrayList<String> users = new ArrayList();
     int port = 2222;
     Boolean isConnected = false;

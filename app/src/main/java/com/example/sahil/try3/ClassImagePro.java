@@ -12,7 +12,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -41,7 +40,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends Activity {
+public class ClassImagePro extends Activity {
     private static final int TAKE_PICTURE_REQUEST_B = 100;
     Spinner spinner ;
     ArrayList<String> items ;
@@ -127,7 +126,7 @@ public class MainActivity extends Activity {
             dept = R.drawable.ban8;
         int asay =0;
         try {
-            copy= Utils.loadResource(MainActivity.this,dept, Imgcodecs.CV_LOAD_IMAGE_UNCHANGED);
+            copy= Utils.loadResource(ClassImagePro.this,dept, Imgcodecs.CV_LOAD_IMAGE_UNCHANGED);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -139,7 +138,7 @@ public class MainActivity extends Activity {
                     @Override
                     public void onClick(View v) {
                        // Intent camerintent =  new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                        Intent camerintent =  new Intent(MainActivity.this,CameraActivity.class);
+                        Intent camerintent =  new Intent(ClassImagePro.this,CameraActivity.class);
                         startActivityForResult(camerintent,100);
                     }
                 }
@@ -183,7 +182,7 @@ public class MainActivity extends Activity {
                     public void onClick(View v) {
                         try {
 
-                      //    copy = Utils.loadResource(MainActivity.this, R.drawable.ban2, Imgcodecs.CV_LOAD_IMAGE_UNCHANGED);
+                      //    copy = Utils.loadResource(ClassImagePro.this, R.drawable.ban2, Imgcodecs.CV_LOAD_IMAGE_UNCHANGED);
 
                             dy--;
                         }catch (Exception e){
@@ -220,9 +219,9 @@ public class MainActivity extends Activity {
 
                       /*    try {   if (cntr == 0) {
 
-                                Toast.makeText(MainActivity.this, ""+dept, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(ClassImagePro.this, ""+dept, Toast.LENGTH_SHORT).show();
 
-                                copy = Utils.loadResource(MainActivity.this,dept, Imgcodecs.CV_LOAD_IMAGE_UNCHANGED);
+                                copy = Utils.loadResource(ClassImagePro.this,dept, Imgcodecs.CV_LOAD_IMAGE_UNCHANGED);
                                 cntr=0;
                             }
 
@@ -241,7 +240,7 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
 
-                Intent i = new Intent(MainActivity.this,Main2Activity.class);
+                Intent i = new Intent(ClassImagePro.this,Main2Activity.class);
                 startActivity(i);
             }
         });
@@ -264,7 +263,7 @@ public class MainActivity extends Activity {
                            int potatoFlag =  potato();
 
                         }else {
-                           Toast.makeText(MainActivity.this, "select an item from the list", Toast.LENGTH_SHORT).show();
+                           Toast.makeText(ClassImagePro.this, "select an item from the list", Toast.LENGTH_SHORT).show();
                        }
 
 
@@ -276,7 +275,7 @@ public class MainActivity extends Activity {
   //                      TextView t1 = (TextView)findViewById(R.id.rawdata);
 //                        t1.setText(" ban: " + banFlag+ " carrot: "+carrotFlag+" pumpkin "+pumpkinFlag+" cucumber "+cucumberFlag );
 
-                    //  Intent i = new Intent(MainActivity.this,display_item.class);
+                    //  Intent i = new Intent(ClassImagePro.this,display_item.class);
 
                      //  startActivity(i);
                      //
@@ -333,7 +332,7 @@ public class MainActivity extends Activity {
 
 
 
-        Toast.makeText(MainActivity.this, "  load: ", Toast.LENGTH_SHORT).show();
+        Toast.makeText(ClassImagePro.this, "  load: ", Toast.LENGTH_SHORT).show();
               Bitmap v = (Bitmap)  data.getExtras().get("data");
                 Utils.bitmapToMat(v, copy);
 
@@ -388,7 +387,7 @@ public class MainActivity extends Activity {
                 firstcountour = contours.get(0);
             }catch (Exception e){
 
-                Toast.makeText(MainActivity.this, "Please take picture from different Angle", Toast.LENGTH_LONG).show();
+                Toast.makeText(ClassImagePro.this, "Please take picture from different Angle", Toast.LENGTH_LONG).show();
             }
             double areaofcontour = Imgproc.contourArea(firstcountour);
 
@@ -424,7 +423,7 @@ public class MainActivity extends Activity {
 
                     db = Imgproc.arcLength(m2, true);
                     scolor="yellow";
-                    Toast.makeText(MainActivity.this, "yellow done", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ClassImagePro.this, "yellow done", Toast.LENGTH_SHORT).show();
                     break;
                 }
 
@@ -452,13 +451,13 @@ public class MainActivity extends Activity {
             Bitmap img2 = Bitmap.createBitmap(fulhsv.cols(), fulhsv.rows(), Bitmap.Config.ARGB_8888);
             Utils.matToBitmap(orignal, img2);
             i2.setImageBitmap(img2);
-            Toast.makeText(MainActivity.this, " image displayed ", Toast.LENGTH_SHORT).show();
+            Toast.makeText(ClassImagePro.this, " image displayed ", Toast.LENGTH_SHORT).show();
 
 
 
         }catch(Exception e){
             e.printStackTrace();
-            Toast.makeText(MainActivity.this, "Excption", Toast.LENGTH_SHORT).show();
+            Toast.makeText(ClassImagePro.this, "Excption", Toast.LENGTH_SHORT).show();
         }
 
 
@@ -487,7 +486,7 @@ public class MainActivity extends Activity {
                 firstcountour = contours.get(0);
             }catch (Exception e){
 
-                Toast.makeText(MainActivity.this, "Please take picture from different Angle", Toast.LENGTH_LONG).show();
+                Toast.makeText(ClassImagePro.this, "Please take picture from different Angle", Toast.LENGTH_LONG).show();
             }
             double areaofcontour = Imgproc.contourArea(firstcountour);
 
@@ -523,7 +522,7 @@ public class MainActivity extends Activity {
 
                     db = Imgproc.arcLength(m2, true);
                     scolor="red";
-                    Toast.makeText(MainActivity.this, "red done", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ClassImagePro.this, "red done", Toast.LENGTH_SHORT).show();
                     break;
                 }
 
@@ -547,13 +546,13 @@ public class MainActivity extends Activity {
             Bitmap img2 = Bitmap.createBitmap(orignal.cols(), orignal.rows(), Bitmap.Config.ARGB_8888);
             Utils.matToBitmap(orignal, img2);
             i2.setImageBitmap(img2);
-            Toast.makeText(MainActivity.this, " image displayed ", Toast.LENGTH_SHORT).show();
+            Toast.makeText(ClassImagePro.this, " image displayed ", Toast.LENGTH_SHORT).show();
 
 
 
         }catch(Exception e){
             e.printStackTrace();
-            Toast.makeText(MainActivity.this, "Excption", Toast.LENGTH_SHORT).show();
+            Toast.makeText(ClassImagePro.this, "Excption", Toast.LENGTH_SHORT).show();
         }
 
 
@@ -566,7 +565,7 @@ public class MainActivity extends Activity {
         t1.setText(" y: " + dy);
 
         try{
-  //  gray = Utils.loadResource(MainActivity.this, R.drawable.ban8, Imgcodecs.CV_LOAD_IMAGE_UNCHANGED);
+  //  gray = Utils.loadResource(ClassImagePro.this, R.drawable.ban8, Imgcodecs.CV_LOAD_IMAGE_UNCHANGED);
 
     gray = copy.clone();
     Mat orignal = gray.clone();
@@ -713,7 +712,7 @@ public class MainActivity extends Activity {
 
                     db = Imgproc.arcLength(m2, true);
                     scolor="yellow";
-                    Toast.makeText(MainActivity.this, "yellow done", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ClassImagePro.this, "yellow done", Toast.LENGTH_SHORT).show();
                     break;
                 }
 
@@ -725,33 +724,33 @@ public class MainActivity extends Activity {
 
 
 
-            //  Toast.makeText(MainActivity.this, "h: "+hsv[0]+" s: "+hsv[1]+ " v: "+hsv[2], Toast.LENGTH_LONG).show();
+            //  Toast.makeText(ClassImagePro.this, "h: "+hsv[0]+" s: "+hsv[1]+ " v: "+hsv[2], Toast.LENGTH_LONG).show();
 
 
             if(ratio<1.3&&areaofcontour1>1000){
                 Acircle circlobject = new Acircle();
                 if(scolor.equalsIgnoreCase("red")){
                     String vegname= circlobject.red();
-                    Toast.makeText(MainActivity.this, ""+vegname, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
 
                 }else if(scolor.equalsIgnoreCase("green")){
                     String vegname= circlobject.red();
-                    Toast.makeText(MainActivity.this, ""+vegname, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
 
                 }else if(scolor.equalsIgnoreCase("white")){
                     String vegname= circlobject.red();
-                    Toast.makeText(MainActivity.this, ""+vegname, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
 
                 }else if(scolor.equalsIgnoreCase("brown")){
                     String vegname= circlobject.red();
-                    Toast.makeText(MainActivity.this, ""+vegname, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
 
                 }else if(scolor.equalsIgnoreCase("whitegreen")){
                     String vegname= circlobject.red();
-                    Toast.makeText(MainActivity.this, ""+vegname, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
 
                 }else {
-                    Toast.makeText(MainActivity.this, " something else ", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ClassImagePro.this, " something else ", Toast.LENGTH_SHORT).show();
                 }
 
 
@@ -760,7 +759,7 @@ public class MainActivity extends Activity {
                 Blong longObject = new Blong();
                 if(scolor.equalsIgnoreCase("yellow")){
                     String vegname= longObject.yellow();
-                    Toast.makeText(MainActivity.this, ""+vegname, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
 
                     Bitmap img2 = Bitmap.createBitmap(orignal.cols(), orignal.rows(), Bitmap.Config.ARGB_8888);
                     Utils.matToBitmap(orignal, img2);
@@ -769,22 +768,22 @@ public class MainActivity extends Activity {
                     return 1;
                 }else if(scolor.equalsIgnoreCase("red")){
                     String vegname= longObject.red();
-                    Toast.makeText(MainActivity.this, ""+vegname, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
 
                 }else if(scolor.equalsIgnoreCase("lightgreen")){
                     String vegname= longObject.red();
-                    Toast.makeText(MainActivity.this, ""+vegname, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
 
                 }else if(scolor.equalsIgnoreCase("darkgreen")){
                     String vegname= longObject.red();
-                    Toast.makeText(MainActivity.this, ""+vegname, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
 
                 }else if(scolor.equalsIgnoreCase("purple")){
                     String vegname= longObject.red();
-                    Toast.makeText(MainActivity.this, ""+vegname, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
 
                 }else {
-                    Toast.makeText(MainActivity.this, " something else! ", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ClassImagePro.this, " something else! ", Toast.LENGTH_SHORT).show();
                 }
 
 
@@ -813,12 +812,12 @@ public class MainActivity extends Activity {
             Bitmap img2 = Bitmap.createBitmap(orignal.cols(), orignal.rows(), Bitmap.Config.ARGB_8888);
             Utils.matToBitmap(orignal, img2);
             i2.setImageBitmap(img2);
-            Toast.makeText(MainActivity.this, " image displayed ", Toast.LENGTH_SHORT).show();
+            Toast.makeText(ClassImagePro.this, " image displayed ", Toast.LENGTH_SHORT).show();
 
 
         }catch(Exception e){
 
-            Toast.makeText(MainActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(ClassImagePro.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
         }
 
         return -1;
@@ -828,7 +827,7 @@ public class MainActivity extends Activity {
         t1.setText(" y: " + dy);
 
         try{
-            //  gray = Utils.loadResource(MainActivity.this, R.drawable.ban8, Imgcodecs.CV_LOAD_IMAGE_UNCHANGED);
+            //  gray = Utils.loadResource(ClassImagePro.this, R.drawable.ban8, Imgcodecs.CV_LOAD_IMAGE_UNCHANGED);
 
             gray = copy.clone();
             Mat orignal = gray.clone();
@@ -976,45 +975,45 @@ public class MainActivity extends Activity {
 
                     db = Imgproc.arcLength(m2, true);
                     scolor="red";
-                    Toast.makeText(MainActivity.this, "red done", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ClassImagePro.this, "red done", Toast.LENGTH_SHORT).show();
                     break;
                 }
 
 
             }
-            Toast.makeText(MainActivity.this, "ratio ", Toast.LENGTH_SHORT).show();
+            Toast.makeText(ClassImagePro.this, "ratio ", Toast.LENGTH_SHORT).show();
             //find largest contour
             //  for(int i =)
 
 
 
-            //  Toast.makeText(MainActivity.this, "h: "+hsv[0]+" s: "+hsv[1]+ " v: "+hsv[2], Toast.LENGTH_LONG).show();
+            //  Toast.makeText(ClassImagePro.this, "h: "+hsv[0]+" s: "+hsv[1]+ " v: "+hsv[2], Toast.LENGTH_LONG).show();
 
 
             if(ratio<1.3&&areaofcontour1>1000){
                 Acircle circlobject = new Acircle();
                 if(scolor.equalsIgnoreCase("red")){
                     String vegname= circlobject.red();
-                    Toast.makeText(MainActivity.this, ""+vegname, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
 
                 }else if(scolor.equalsIgnoreCase("green")){
                     String vegname= circlobject.red();
-                    Toast.makeText(MainActivity.this, ""+vegname, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
 
                 }else if(scolor.equalsIgnoreCase("white")){
                     String vegname= circlobject.red();
-                    Toast.makeText(MainActivity.this, ""+vegname, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
 
                 }else if(scolor.equalsIgnoreCase("brown")){
                     String vegname= circlobject.red();
-                    Toast.makeText(MainActivity.this, ""+vegname, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
 
                 }else if(scolor.equalsIgnoreCase("whitegreen")){
                     String vegname= circlobject.red();
-                    Toast.makeText(MainActivity.this, ""+vegname, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
 
                 }else {
-                    Toast.makeText(MainActivity.this, " something else ", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ClassImagePro.this, " something else ", Toast.LENGTH_SHORT).show();
                 }
 
 
@@ -1023,11 +1022,11 @@ public class MainActivity extends Activity {
                 Blong longObject = new Blong();
                 if(scolor.equalsIgnoreCase("yellow")){
                     String vegname= longObject.yellow();
-                    Toast.makeText(MainActivity.this, ""+vegname, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
 
                 }else if(scolor.equalsIgnoreCase("red")){
                     String vegname= longObject.red();
-                    Toast.makeText(MainActivity.this, ""+vegname, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
 
                     Bitmap img2 = Bitmap.createBitmap(fulhsv.cols(), fulhsv.rows(), Bitmap.Config.ARGB_8888);
                     Utils.matToBitmap(fulhsv, img2);
@@ -1036,18 +1035,18 @@ public class MainActivity extends Activity {
                     return 1;
                 }else if(scolor.equalsIgnoreCase("lightgreen")){
                     String vegname= longObject.red();
-                    Toast.makeText(MainActivity.this, ""+vegname, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
 
                 }else if(scolor.equalsIgnoreCase("darkgreen")){
                     String vegname= longObject.red();
-                    Toast.makeText(MainActivity.this, ""+vegname, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
 
                 }else if(scolor.equalsIgnoreCase("purple")){
                     String vegname= longObject.red();
-                    Toast.makeText(MainActivity.this, ""+vegname, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
 
                 }else {
-                    Toast.makeText(MainActivity.this, " something else! ", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ClassImagePro.this, " something else! ", Toast.LENGTH_SHORT).show();
                 }
 
 
@@ -1080,7 +1079,7 @@ public class MainActivity extends Activity {
 
         }catch(Exception e){
 
-            Toast.makeText(MainActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(ClassImagePro.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
         }
         return -1;
     }
@@ -1091,7 +1090,7 @@ public class MainActivity extends Activity {
         t1.setText(" y: " + dy );
         try {
 
-            //gray= Utils.loadResource(MainActivity.this, R.drawable.pveg, Imgcodecs.CV_LOAD_IMAGE_UNCHANGED);
+            //gray= Utils.loadResource(ClassImagePro.this, R.drawable.pveg, Imgcodecs.CV_LOAD_IMAGE_UNCHANGED);
             gray = copy.clone();
             Mat orignal = gray.clone();
 
@@ -1212,7 +1211,7 @@ public class MainActivity extends Activity {
 
 
                     scolor="red";
-                    Toast.makeText(MainActivity.this, "red done", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ClassImagePro.this, "red done", Toast.LENGTH_SHORT).show();
                   break;
              }
 
@@ -1220,7 +1219,7 @@ public class MainActivity extends Activity {
 
           }
 
-            //  Toast.makeText(MainActivity.this, "h: "+hsv[0]+" s: "+hsv[1]+ " v: "+hsv[2], Toast.LENGTH_LONG).show();
+            //  Toast.makeText(ClassImagePro.this, "h: "+hsv[0]+" s: "+hsv[1]+ " v: "+hsv[2], Toast.LENGTH_LONG).show();
 
             double wedth =   boundingrect.width;
             double hieght= boundingrect.height;
@@ -1236,27 +1235,27 @@ public class MainActivity extends Activity {
                 Acircle circlobject = new Acircle();
                 if(scolor.equalsIgnoreCase("red")){
                     String vegname= circlobject.red();
-                    Toast.makeText(MainActivity.this, ""+vegname, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
 
 
                 }else if(scolor.equalsIgnoreCase("green")){
                     String vegname= circlobject.red();
-                    Toast.makeText(MainActivity.this, ""+vegname, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
 
                 }else if(scolor.equalsIgnoreCase("white")){
                     String vegname= circlobject.red();
-                    Toast.makeText(MainActivity.this, ""+vegname, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
 
                 }else if(scolor.equalsIgnoreCase("brown")){
                     String vegname= circlobject.red();
-                    Toast.makeText(MainActivity.this, ""+vegname, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
 
                 }else if(scolor.equalsIgnoreCase("whitegreen")){
                     String vegname= circlobject.red();
-                    Toast.makeText(MainActivity.this, ""+vegname, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
 
                 }else {
-                    Toast.makeText(MainActivity.this, " something else ", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ClassImagePro.this, " something else ", Toast.LENGTH_SHORT).show();
                 }
 
 
@@ -1265,10 +1264,10 @@ public class MainActivity extends Activity {
                 Blong longObject = new Blong();
                 if(scolor.equalsIgnoreCase("yellow")){
                     String vegname= longObject.yellow();
-                    Toast.makeText(MainActivity.this, ""+vegname, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
                 }if(scolor.equalsIgnoreCase("red")){
                     String vegname= longObject.red();
-                    Toast.makeText(MainActivity.this, ""+vegname, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
 
                     Bitmap img2 = Bitmap.createBitmap(fulhsv.cols(), fulhsv.rows(), Bitmap.Config.ARGB_8888);
                     Utils.matToBitmap(fulhsv, img2);
@@ -1277,18 +1276,18 @@ public class MainActivity extends Activity {
 
                 }else if(scolor.equalsIgnoreCase("lightgreen")){
                     String vegname= longObject.red();
-                    Toast.makeText(MainActivity.this, ""+vegname, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
 
                 }else if(scolor.equalsIgnoreCase("darkgreen")){
                     String vegname= longObject.red();
-                    Toast.makeText(MainActivity.this, ""+vegname, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
 
                 }else if(scolor.equalsIgnoreCase("purple")){
                     String vegname= longObject.red();
-                    Toast.makeText(MainActivity.this, ""+vegname, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
 
                 }else {
-                    Toast.makeText(MainActivity.this, " something else ", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ClassImagePro.this, " something else ", Toast.LENGTH_SHORT).show();
                 }
 
 
@@ -1320,7 +1319,7 @@ public class MainActivity extends Activity {
 
         }catch(Exception e){
 
-            Toast.makeText(MainActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(ClassImagePro.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
         }
         return -1;
     }
@@ -1330,7 +1329,7 @@ public class MainActivity extends Activity {
         t1.setText(" y: " + dy );
         try {
 
-            //gray= Utils.loadResource(MainActivity.this, R.drawable.pveg, Imgcodecs.CV_LOAD_IMAGE_UNCHANGED);
+            //gray= Utils.loadResource(ClassImagePro.this, R.drawable.pveg, Imgcodecs.CV_LOAD_IMAGE_UNCHANGED);
             gray = copy.clone();
             Mat orignal = gray.clone();
 
@@ -1451,7 +1450,7 @@ public class MainActivity extends Activity {
 
 
                     scolor="red";
-                    Toast.makeText(MainActivity.this, "red done", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ClassImagePro.this, "red done", Toast.LENGTH_SHORT).show();
                     break;
                 }
 
@@ -1459,7 +1458,7 @@ public class MainActivity extends Activity {
 
             }
 
-            //  Toast.makeText(MainActivity.this, "h: "+hsv[0]+" s: "+hsv[1]+ " v: "+hsv[2], Toast.LENGTH_LONG).show();
+            //  Toast.makeText(ClassImagePro.this, "h: "+hsv[0]+" s: "+hsv[1]+ " v: "+hsv[2], Toast.LENGTH_LONG).show();
 
             double wedth =   boundingrect.width;
             double hieght= boundingrect.height;
@@ -1475,27 +1474,27 @@ public class MainActivity extends Activity {
                 Acircle circlobject = new Acircle();
                 if(scolor.equalsIgnoreCase("red")){
                     String vegname= circlobject.red();
-                    Toast.makeText(MainActivity.this, ""+vegname, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
 
 
                 }else if(scolor.equalsIgnoreCase("green")){
                     String vegname= circlobject.red();
-                    Toast.makeText(MainActivity.this, ""+vegname, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
 
                 }else if(scolor.equalsIgnoreCase("white")){
                     String vegname= circlobject.red();
-                    Toast.makeText(MainActivity.this, ""+vegname, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
 
                 }else if(scolor.equalsIgnoreCase("brown")){
                     String vegname= circlobject.red();
-                    Toast.makeText(MainActivity.this, ""+vegname, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
 
                 }else if(scolor.equalsIgnoreCase("whitegreen")){
                     String vegname= circlobject.red();
-                    Toast.makeText(MainActivity.this, ""+vegname, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
 
                 }else {
-                    Toast.makeText(MainActivity.this, " something else ", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ClassImagePro.this, " something else ", Toast.LENGTH_SHORT).show();
                 }
 
 
@@ -1504,27 +1503,27 @@ public class MainActivity extends Activity {
                 Blong longObject = new Blong();
                 if(scolor.equalsIgnoreCase("yellow")){
                     String vegname= longObject.yellow();
-                    Toast.makeText(MainActivity.this, ""+vegname, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
                 }if(scolor.equalsIgnoreCase("red")){
                     String vegname= longObject.red();
-                    Toast.makeText(MainActivity.this, ""+vegname, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
 
 
                 }else if(scolor.equalsIgnoreCase("lightgreen")){
                     String vegname= longObject.red();
-                    Toast.makeText(MainActivity.this, ""+vegname, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
                     return 1;
 
                 }else if(scolor.equalsIgnoreCase("darkgreen")){
                     String vegname= longObject.red();
-                    Toast.makeText(MainActivity.this, ""+vegname, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
 
                 }else if(scolor.equalsIgnoreCase("purple")){
                     String vegname= longObject.red();
-                    Toast.makeText(MainActivity.this, ""+vegname, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
 
                 }else {
-                    Toast.makeText(MainActivity.this, " something else ", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ClassImagePro.this, " something else ", Toast.LENGTH_SHORT).show();
                 }
 
 
@@ -1556,7 +1555,7 @@ public class MainActivity extends Activity {
 
         }catch(Exception e){
 
-            Toast.makeText(MainActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(ClassImagePro.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
         }
         return -1;
     }
@@ -1566,7 +1565,7 @@ public class MainActivity extends Activity {
         t1.setText(" y: " + dy );
         try {
 
-            //gray= Utils.loadResource(MainActivity.this, R.drawable.pveg, Imgcodecs.CV_LOAD_IMAGE_UNCHANGED);
+            //gray= Utils.loadResource(ClassImagePro.this, R.drawable.pveg, Imgcodecs.CV_LOAD_IMAGE_UNCHANGED);
             gray = copy.clone();
             Mat orignal = gray.clone();
 
@@ -1695,7 +1694,7 @@ public class MainActivity extends Activity {
 
 
                     scolor="red";
-                    Toast.makeText(MainActivity.this, "red done", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ClassImagePro.this, "red done", Toast.LENGTH_SHORT).show();
                     break;
                 }
 
@@ -1703,7 +1702,7 @@ public class MainActivity extends Activity {
 
             }
 
-            //  Toast.makeText(MainActivity.this, "h: "+hsv[0]+" s: "+hsv[1]+ " v: "+hsv[2], Toast.LENGTH_LONG).show();
+            //  Toast.makeText(ClassImagePro.this, "h: "+hsv[0]+" s: "+hsv[1]+ " v: "+hsv[2], Toast.LENGTH_LONG).show();
 
             double wedth =   boundingrect.width;
             double hieght= boundingrect.height;
@@ -1719,27 +1718,27 @@ public class MainActivity extends Activity {
                 Acircle circlobject = new Acircle();
                 if(scolor.equalsIgnoreCase("red")){
                     String vegname= circlobject.red();
-                    Toast.makeText(MainActivity.this, ""+vegname, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
 
 
                 }else if(scolor.equalsIgnoreCase("green")){
                     String vegname= circlobject.red();
-                    Toast.makeText(MainActivity.this, ""+vegname, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
 
                 }else if(scolor.equalsIgnoreCase("white")){
                     String vegname= circlobject.red();
-                    Toast.makeText(MainActivity.this, ""+vegname, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
 
                 }else if(scolor.equalsIgnoreCase("brown")){
                     String vegname= circlobject.red();
-                    Toast.makeText(MainActivity.this, ""+vegname, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
 
                 }else if(scolor.equalsIgnoreCase("whitegreen")){
                     String vegname= circlobject.red();
-                    Toast.makeText(MainActivity.this, ""+vegname, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
 
                 }else {
-                    Toast.makeText(MainActivity.this, " something else ", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ClassImagePro.this, " something else ", Toast.LENGTH_SHORT).show();
                 }
 
 
@@ -1748,26 +1747,26 @@ public class MainActivity extends Activity {
                 Blong longObject = new Blong();
                 if(scolor.equalsIgnoreCase("yellow")){
                     String vegname= longObject.yellow();
-                    Toast.makeText(MainActivity.this, ""+vegname, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
                 }if(scolor.equalsIgnoreCase("red")){
                     String vegname= longObject.red();
-                    Toast.makeText(MainActivity.this, ""+vegname, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
                     return 1;
 
                 }else if(scolor.equalsIgnoreCase("lightgreen")){
                     String vegname= longObject.red();
-                    Toast.makeText(MainActivity.this, ""+vegname, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
 
                 }else if(scolor.equalsIgnoreCase("darkgreen")){
                     String vegname= longObject.red();
-                    Toast.makeText(MainActivity.this, ""+vegname, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
 
                 }else if(scolor.equalsIgnoreCase("purple")){
                     String vegname= longObject.red();
-                    Toast.makeText(MainActivity.this, ""+vegname, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
 
                 }else {
-                    Toast.makeText(MainActivity.this, " something else ", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ClassImagePro.this, " something else ", Toast.LENGTH_SHORT).show();
                 }
 
 
@@ -1799,7 +1798,7 @@ public class MainActivity extends Activity {
 
         }catch(Exception e){
 
-            Toast.makeText(MainActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(ClassImagePro.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
         }
         return -1;
     }
@@ -1812,7 +1811,7 @@ public class MainActivity extends Activity {
       try {
 
           //reading the picture into a mat
-         // gray= Utils.loadResource(MainActivity.this, R.drawable.shapeskela, Imgcodecs.CV_LOAD_IMAGE_UNCHANGED);
+         // gray= Utils.loadResource(ClassImagePro.this, R.drawable.shapeskela, Imgcodecs.CV_LOAD_IMAGE_UNCHANGED);
           gray = copy;
           CascadeClassifier Cc ;
 
@@ -1876,7 +1875,7 @@ public class MainActivity extends Activity {
 
 
           scolor="brown";
-          Toast.makeText(MainActivity.this, "brown done", Toast.LENGTH_SHORT).show();
+          Toast.makeText(ClassImagePro.this, "brown done", Toast.LENGTH_SHORT).show();
 
 
 
@@ -1900,7 +1899,7 @@ public class MainActivity extends Activity {
 
       }catch(Exception e){
 
-          Toast.makeText(MainActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+          Toast.makeText(ClassImagePro.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
       }
 
 return -1;
@@ -1919,10 +1918,10 @@ return -1;
 
         try {
 
-           // gray = Utils.loadResource(MainActivity.this, R.drawable.ban4, Imgcodecs.CV_LOAD_IMAGE_UNCHANGED);
+           // gray = Utils.loadResource(ClassImagePro.this, R.drawable.ban4, Imgcodecs.CV_LOAD_IMAGE_UNCHANGED);
             gray=copy;
         }catch (Exception e) {
-            Toast.makeText(MainActivity.this, " gray load: exception ", Toast.LENGTH_SHORT).show();
+            Toast.makeText(ClassImagePro.this, " gray load: exception ", Toast.LENGTH_SHORT).show();
 
         }
 
@@ -1932,7 +1931,7 @@ return -1;
 try {
     Imgproc.cvtColor(gray, gray, Imgproc.COLOR_BGR2GRAY);
 }catch (Exception e){
-    Toast.makeText(MainActivity.this, " color coversion problem "+e.getMessage(), Toast.LENGTH_SHORT).show();
+    Toast.makeText(ClassImagePro.this, " color coversion problem "+e.getMessage(), Toast.LENGTH_SHORT).show();
 
 }
             try {
@@ -1955,7 +1954,7 @@ try {
         os.close();
 
     }catch (Exception e) {
-        Toast.makeText(MainActivity.this, " casban.xml load exception ", Toast.LENGTH_SHORT).show();
+        Toast.makeText(ClassImagePro.this, " casban.xml load exception ", Toast.LENGTH_SHORT).show();
 
     }
         CascadeClassifier Cc = null;
@@ -1967,23 +1966,23 @@ try {
 
 
         }catch (Exception e) {
-            Toast.makeText(MainActivity.this, " apply cascad exception occurred ", Toast.LENGTH_SHORT).show();
+            Toast.makeText(ClassImagePro.this, " apply cascad exception occurred ", Toast.LENGTH_SHORT).show();
 
         }
 
 
             if (Cc.empty()) {
-                Toast.makeText(MainActivity.this, " failed to load cascade ", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ClassImagePro.this, " failed to load cascade ", Toast.LENGTH_SHORT).show();
                 Cc = null;
             } else
-                Toast.makeText(MainActivity.this, " Loaded cascade ", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ClassImagePro.this, " Loaded cascade ", Toast.LENGTH_SHORT).show();
 
         try{
             cascadeDir.delete();
 
 
         }catch (Exception e) {
-            Toast.makeText(MainActivity.this, " dir delete ", Toast.LENGTH_SHORT).show();
+            Toast.makeText(ClassImagePro.this, " dir delete ", Toast.LENGTH_SHORT).show();
 
         }
 
@@ -2026,7 +2025,7 @@ try {
 
 
         } catch (Exception e) {
-            Toast.makeText(MainActivity.this, " bitmap and rect draw problem ", Toast.LENGTH_SHORT).show();
+            Toast.makeText(ClassImagePro.this, " bitmap and rect draw problem ", Toast.LENGTH_SHORT).show();
         }
 
 
@@ -2044,27 +2043,27 @@ try {
             Acircle circlobject = new Acircle();
             if(scolor.equalsIgnoreCase("red")){
                 String vegname= circlobject.red();
-                Toast.makeText(MainActivity.this, ""+vegname, Toast.LENGTH_SHORT).show();
+                Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
 
             }else if(scolor.equalsIgnoreCase("green")){
                 String vegname= circlobject.green();
-                Toast.makeText(MainActivity.this, ""+vegname, Toast.LENGTH_SHORT).show();
+                Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
 
             }else if(scolor.equalsIgnoreCase("white")){
                 String vegname= circlobject.white ();
-                Toast.makeText(MainActivity.this, ""+vegname, Toast.LENGTH_SHORT).show();
+                Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
 
             }else if(scolor.equalsIgnoreCase("brown")){
                 String vegname= circlobject.brown();
-                Toast.makeText(MainActivity.this, ""+vegname, Toast.LENGTH_SHORT).show();
+                Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
 
             }else if(scolor.equalsIgnoreCase("whitegreen")){
                 String vegname= circlobject.whitegreen();
-                Toast.makeText(MainActivity.this, ""+vegname, Toast.LENGTH_SHORT).show();
+                Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
 
 
             }else {
-                Toast.makeText(MainActivity.this, " something else ", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ClassImagePro.this, " something else ", Toast.LENGTH_SHORT).show();
             }
 
 
@@ -2073,30 +2072,30 @@ try {
             Blong longObject = new Blong();
             if(scolor.equalsIgnoreCase("yellow")){
                 String vegname= longObject.yellow();
-                Toast.makeText(MainActivity.this, ""+vegname, Toast.LENGTH_SHORT).show();
+                Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
             }if(scolor.equalsIgnoreCase("red")){
                 String vegname= longObject.red();
-                Toast.makeText(MainActivity.this, ""+vegname, Toast.LENGTH_SHORT).show();
+                Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
 
             }else if(scolor.equalsIgnoreCase("lightgreen")){
                 String vegname= longObject.red();
-                Toast.makeText(MainActivity.this, ""+vegname, Toast.LENGTH_SHORT).show();
+                Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
 
             }else if(scolor.equalsIgnoreCase("darkgreen")){
                 String vegname= longObject.red();
-                Toast.makeText(MainActivity.this, ""+vegname, Toast.LENGTH_SHORT).show();
+                Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
 
             }else if(scolor.equalsIgnoreCase("purple")){
                 String vegname= longObject.red();
-                Toast.makeText(MainActivity.this, ""+vegname, Toast.LENGTH_SHORT).show();
+                Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
 
             }else {
-                Toast.makeText(MainActivity.this, " something else ", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ClassImagePro.this, " something else ", Toast.LENGTH_SHORT).show();
             }
 
 
         }else{
-            Toast.makeText(MainActivity.this, " no item found ", Toast.LENGTH_SHORT).show();
+            Toast.makeText(ClassImagePro.this, " no item found ", Toast.LENGTH_SHORT).show();
         }
 
 
@@ -2165,26 +2164,26 @@ try {
             Acircle circlobject = new Acircle();
             if(scolor.equalsIgnoreCase("red")){
                 String vegname= circlobject.red();
-                Toast.makeText(MainActivity.this, ""+vegname, Toast.LENGTH_SHORT).show();
+                Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
 
             }else if(scolor.equalsIgnoreCase("green")){
                 String vegname= circlobject.red();
-                Toast.makeText(MainActivity.this, ""+vegname, Toast.LENGTH_SHORT).show();
+                Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
 
             }else if(scolor.equalsIgnoreCase("white")){
                 String vegname= circlobject.red();
-                Toast.makeText(MainActivity.this, ""+vegname, Toast.LENGTH_SHORT).show();
+                Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
 
             }else if(scolor.equalsIgnoreCase("brown")){
                 String vegname= circlobject.red();
-                Toast.makeText(MainActivity.this, ""+vegname, Toast.LENGTH_SHORT).show();
+                Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
 
             }else if(scolor.equalsIgnoreCase("whitegreen")){
                 String vegname= circlobject.red();
-                Toast.makeText(MainActivity.this, ""+vegname, Toast.LENGTH_SHORT).show();
+                Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
 
             }else {
-                Toast.makeText(MainActivity.this, " something else ", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ClassImagePro.this, " something else ", Toast.LENGTH_SHORT).show();
             }
 
 
@@ -2193,7 +2192,7 @@ try {
             Blong longObject = new Blong();
             if(scolor.equalsIgnoreCase("yellow")){
                 String vegname= longObject.yellow();
-                Toast.makeText(MainActivity.this, ""+vegname, Toast.LENGTH_SHORT).show();
+                Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
 
                 Bitmap img2 = Bitmap.createBitmap(orignal.cols(), orignal.rows(), Bitmap.Config.ARGB_8888);
                 Utils.matToBitmap(orignal, img2);
@@ -2202,22 +2201,22 @@ try {
                 return 1;
             }else if(scolor.equalsIgnoreCase("red")){
                 String vegname= longObject.red();
-                Toast.makeText(MainActivity.this, ""+vegname, Toast.LENGTH_SHORT).show();
+                Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
 
             }else if(scolor.equalsIgnoreCase("lightgreen")){
                 String vegname= longObject.red();
-                Toast.makeText(MainActivity.this, ""+vegname, Toast.LENGTH_SHORT).show();
+                Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
 
             }else if(scolor.equalsIgnoreCase("darkgreen")){
                 String vegname= longObject.red();
-                Toast.makeText(MainActivity.this, ""+vegname, Toast.LENGTH_SHORT).show();
+                Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
 
             }else if(scolor.equalsIgnoreCase("purple")){
                 String vegname= longObject.red();
-                Toast.makeText(MainActivity.this, ""+vegname, Toast.LENGTH_SHORT).show();
+                Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
 
             }else {
-                Toast.makeText(MainActivity.this, " something else! ", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ClassImagePro.this, " something else! ", Toast.LENGTH_SHORT).show();
             }
 
 

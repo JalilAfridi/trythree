@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".Main2Activity"
-    android:background="#62b8e3">
+    android:background="@drawable/dp">
 
     <GridView
         android:id="@+id/gridView1"
@@ -13,7 +13,8 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/textView1"
         android:numColumns="3"
-        android:background="#62b8e3">
+        android:drawSelectorOnTop="true"
+        android:listSelector="#0008e3">
 
     </GridView>
 
@@ -23,7 +24,6 @@
         android:layout_height="wrap_content"
         android:textSize="25dp"
         android:textStyle="bold"
-        android:text=" Select an item..."
-        android:background="#62b8e3" />
+        android:text=" Select an item..." />
 
 </RelativeLayout> 

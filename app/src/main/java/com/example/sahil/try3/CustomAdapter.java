@@ -2,6 +2,7 @@ package com.example.sahil.try3;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -77,7 +78,13 @@ public class CustomAdapter extends BaseAdapter{
                     if (dbAccess.datahub.itemslist.get(i).equalsIgnoreCase(result[position])) {
                         item = dbAccess.datahub.itemslist.get(i);
                         itemrate = dbAccess.datahub.itemsrates.get(i);
-                        Toast.makeText(context, "" + result[position] + " Costs " + itemrate, Toast.LENGTH_LONG).show();
+                      //  Toast.makeText(context, "" + result[position] + " Costs " + itemrate, Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(context, popup.class);
+                        intent.putExtra("rate",itemrate);
+                        intent.putExtra("item", result[position] );
+
+                        context.startActivity(intent);
+
                         break;
                     }
                     i++;

@@ -29,6 +29,7 @@ public class data  {
         itemslist.add("Laddy finger");
 
 
+
         itemsrates.add("12");
         itemsrates.add("1");
         itemsrates.add("2");
@@ -40,6 +41,7 @@ public class data  {
         itemsrates.add("14");
         itemsrates.add("44");
         itemsrates.add("54");
+
 
     }
 

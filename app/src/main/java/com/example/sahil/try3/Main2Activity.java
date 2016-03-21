@@ -1,8 +1,11 @@
 package com.example.sahil.try3;
 
 import java.util.ArrayList;
+
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.app.Activity;
+import android.view.WindowManager;
 import android.widget.GridView;
 
 
@@ -15,7 +18,7 @@ public class Main2Activity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
-
+        getWindow().setBackgroundDrawable(new ColorDrawable(0));
         gv = (GridView)findViewById(R.id.gridView1);
 
         gv=(GridView) findViewById(R.id.gridView1);

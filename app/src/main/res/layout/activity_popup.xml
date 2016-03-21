@@ -7,6 +7,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@drawable/buttonshape"
     tools:context="com.example.sahil.try3.popup">
 
     <ImageView
@@ -14,6 +15,7 @@
         android:layout_height="100dp"
         android:id="@+id/popup_image"
         android:src="@drawable/shapes"
+
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true" />
 
@@ -37,6 +39,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Okay!"
+        android:background="@drawable/buttonshape"
         android:id="@+id/pop_button"
         android:layout_below="@+id/popup_image"
         android:layout_alignEnd="@+id/popup_textView" />

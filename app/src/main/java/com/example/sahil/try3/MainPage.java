@@ -10,7 +10,7 @@ import android.widget.ImageView;
 public class MainPage extends Activity {
 
     Button itemslistbutton , ImageproButton;
-    //ImageView img ;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -19,8 +19,7 @@ public class MainPage extends Activity {
         itemslistbutton = (Button) findViewById(R.id.items_List);
 
         ImageproButton =(Button) findViewById(R.id.ImageproButton);
-       // img = (ImageView) findViewById(R.id.dp);
-       // img.setImageResource(R.drawable.dp);
+
 
         ImageproButton.setOnClickListener(new View.OnClickListener() {
             @Override

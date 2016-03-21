@@ -3,6 +3,7 @@ package com.example.sahil.try3;
 
 import org.opencv.android.Utils;
 import org.opencv.core.Core;
+import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 
 import android.app.Activity;
@@ -123,10 +124,12 @@ public class ClassImagePro extends Activity {
                                               }
 
                                           });
-            dept = R.drawable.ban8;
+            dept = R.drawable.face;
         int asay =0;
         try {
             copy= Utils.loadResource(ClassImagePro.this,dept, Imgcodecs.CV_LOAD_IMAGE_UNCHANGED);
+            gray = Utils.loadResource(ClassImagePro.this,R.drawable.lips, Imgcodecs.CV_LOAD_IMAGE_UNCHANGED);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -240,7 +243,7 @@ public class ClassImagePro extends Activity {
             @Override
             public void onClick(View v) {
 
-                Intent i = new Intent(ClassImagePro.this,Main2Activity.class);
+                Intent i = new Intent(ClassImagePro.this,display_item.class);
                 startActivity(i);
             }
         });
@@ -350,20 +353,26 @@ public class ClassImagePro extends Activity {
                 try{
                     Mat fulhsv = copy.clone();
 
-                    Imgproc.cvtColor(copy, fulhsv, Imgproc.COLOR_BGR2HSV_FULL);
+                    Imgproc.cvtColor(fulhsv, fulhsv, Imgproc.COLOR_BGR2HSV_FULL);
 
-                    Scalar min  = new Scalar(10,80,200);
-                    Scalar max  = new Scalar(40,200,256);
+
+                    Scalar min  = new Scalar(10,80,150);
+                    Scalar max  = new Scalar(40,250,256);
 
                     Core.inRange(fulhsv, min, max, fulhsv);
 
-                    Imgproc.Canny(fulhsv, fulhsv, 10, 50);
-                    Imgproc.GaussianBlur(fulhsv, fulhsv, new Size(5, 5), 5);
+
+                   Imgproc.GaussianBlur(fulhsv, fulhsv, new Size(5, 5), 5);
+                    Imgproc.Canny(fulhsv, fulhsv, 1, 400);
+                    Imgproc.dilate(fulhsv,fulhsv,new Mat());
+                   // Imgproc.Canny(fulhsv, fulhsv, 20, 50);
+
                     orignal = fulhsv.clone();
                     List<MatOfPoint> contours = new ArrayList<MatOfPoint>();
                     List<MatOfPoint> filteredcontours = new ArrayList<MatOfPoint>();
 
                     Imgproc.findContours(fulhsv, contours, new Mat(), Imgproc.RETR_LIST, Imgproc.CHAIN_APPROX_SIMPLE);
+
                     MatOfPoint firstcountour=null;
 
                     for(int i=0;i<contours.size();i++){
@@ -375,12 +384,14 @@ public class ClassImagePro extends Activity {
                     }
 
 
-            double confidancelevel = Imgproc.matchShapes(contours.get(dy),contours.get(dx) , Imgproc.CV_CONTOURS_MATCH_I1, 1);
+            double confidancelevel = Imgproc.matchShapes(filteredcontours.get(dy),filteredcontours.get(dx) , Imgproc.CV_CONTOURS_MATCH_I3, 1);
 
 
             TextView rawdata = (TextView) findViewById(R.id.rawdata);
 
-            rawdata.setText("confidance: " + confidancelevel);
+            rawdata.setText("confidance: " + confidancelevel+"y: "+dy);
+
+                    run(Imgproc.TM_CCOEFF);
 
 /*
             try {
@@ -448,9 +459,9 @@ public class ClassImagePro extends Activity {
 
         }
 
-            Bitmap img2 = Bitmap.createBitmap(fulhsv.cols(), fulhsv.rows(), Bitmap.Config.ARGB_8888);
-            Utils.matToBitmap(orignal, img2);
-            i2.setImageBitmap(img2);
+          //  Bitmap img2 = Bitmap.createBitmap(orignal.cols(), orignal.rows(), Bitmap.Config.ARGB_8888);
+        //    Utils.matToBitmap(orignal, img2);
+          //  i2.setImageBitmap(img2);
             Toast.makeText(ClassImagePro.this, " image displayed ", Toast.LENGTH_SHORT).show();
 
 
@@ -558,8 +569,6 @@ public class ClassImagePro extends Activity {
 
         return 0;
     }
-
-
     int bananaold(){
         TextView t1 = (TextView)findViewById(R.id.rawdata);
         t1.setText(" y: " + dy);
@@ -1083,7 +1092,6 @@ public class ClassImagePro extends Activity {
         }
         return -1;
     }
-
     int carrot1old(){
 
         TextView t1 = (TextView)findViewById(R.id.rawdata);
@@ -1802,7 +1810,6 @@ public class ClassImagePro extends Activity {
         }
         return -1;
     }
-
   int potato(){
 
 
@@ -1904,7 +1911,6 @@ public class ClassImagePro extends Activity {
 
 return -1;
   }
-
     void haarcascad(){
 
 
@@ -2156,8 +2162,6 @@ try {
     }
 
 
-
-
     int finaltest(double ratio, double areaofcontour){
 
         if(ratio<1.3&&areaofcontour>1000){
@@ -2223,6 +2227,46 @@ try {
         }
 
         return  0;
+    }
+
+
+
+    public void run(int match_method) {
+
+
+        Mat img = copy.clone();
+        Mat templ = gray.clone();
+
+        // / Create the result matrix
+        int result_cols = img.cols() - templ.cols() + 1;
+        int result_rows = img.rows() - templ.rows() + 1;
+        Mat result = new Mat(result_rows, result_cols, CvType.CV_32FC1);
+
+        // / Do the Matching and Normalize
+        Imgproc.matchTemplate(img, templ, result, match_method);
+        Core.normalize(result, result, 0, 1, Core.NORM_MINMAX, -1, new Mat());
+
+        // / Localizing the best match with minMaxLoc
+        Core.MinMaxLocResult mmr = Core.minMaxLoc(result);
+
+        Point matchLoc;
+        if (match_method == Imgproc.TM_SQDIFF || match_method == Imgproc.TM_SQDIFF_NORMED) {
+            matchLoc = mmr.minLoc;
+        } else {
+            matchLoc = mmr.maxLoc;
+        }
+
+        // / Show me what you got
+        Imgproc.rectangle(img, matchLoc, new Point(matchLoc.x + templ.cols(),
+                matchLoc.y + templ.rows()), new Scalar(0, 255, 0));
+
+        // Save the visualized detection.
+
+        Bitmap img2 = Bitmap.createBitmap(orignal.cols(), orignal.rows(), Bitmap.Config.ARGB_8888);
+        Utils.matToBitmap(orignal, img2);
+        i2.setImageBitmap(img2);
+        Toast.makeText(ClassImagePro.this, " Detected feature", Toast.LENGTH_SHORT).show();
+
     }
 
 

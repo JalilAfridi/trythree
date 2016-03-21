@@ -25,7 +25,7 @@
         <activity
             android:name=".display_item"
             android:label="@string/title_activity_display_item"
-            android:theme="@android:style/Theme.Material.Light.NoActionBar" />
+            android:theme="@android:style/Theme.Holo.Dialog.NoActionBar" />
         <activity
             android:name=".CameraActivity"
             android:label="@string/title_activity_activity_camera"
@@ -37,11 +37,11 @@
         <activity
             android:name=".Main2Activity"
             android:label="@string/title_activity_main2"
-            android:theme="@android:style/Theme.Material.Light.NoActionBar"/>
+            android:theme="@android:style/Theme.Holo.DialogWhenLarge.NoActionBar"/>
         <activity
             android:name=".popup"
             android:label="@string/title_activity_popup"
-            android:theme="@android:style/Theme.Holo.Dialog" />
+            android:theme="@android:style/Theme.Holo.Dialog.NoActionBar" />
         <activity
             android:name=".ClassImagePro"
             android:theme="@android:style/Theme.Material.Light.NoActionBar">

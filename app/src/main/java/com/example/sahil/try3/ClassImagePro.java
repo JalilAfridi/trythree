@@ -124,11 +124,11 @@ public class ClassImagePro extends Activity {
                                               }
 
                                           });
-            dept = R.drawable.face;
+            dept = R.drawable.ban4;
         int asay =0;
         try {
             copy= Utils.loadResource(ClassImagePro.this,dept, Imgcodecs.CV_LOAD_IMAGE_UNCHANGED);
-            gray = Utils.loadResource(ClassImagePro.this,R.drawable.lips, Imgcodecs.CV_LOAD_IMAGE_UNCHANGED);
+
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -350,7 +350,7 @@ public class ClassImagePro extends Activity {
 
              int banana1(){
 
-                try{
+              try{
                     Mat fulhsv = copy.clone();
 
                     Imgproc.cvtColor(fulhsv, fulhsv, Imgproc.COLOR_BGR2HSV_FULL);
@@ -391,11 +391,11 @@ public class ClassImagePro extends Activity {
 
             rawdata.setText("confidance: " + confidancelevel+"y: "+dy);
 
-                    run(Imgproc.TM_CCOEFF);
 
-/*
+
+
             try {
-                firstcountour = contours.get(0);
+              firstcountour = contours.get(0);
             }catch (Exception e){
 
                 Toast.makeText(ClassImagePro.this, "Please take picture from different Angle", Toast.LENGTH_LONG).show();
@@ -443,14 +443,14 @@ public class ClassImagePro extends Activity {
 
             finaltest(ratio,areaofcontour);
 
-            */
+
 
             try {
                 ArrayList<MatOfPoint> largest_contours = new ArrayList<MatOfPoint>();
-                largest_contours.add(filteredcontours.get(dy));
-                largest_contours.add(filteredcontours.get(dx));
+            largest_contours.add(filteredcontours.get(dy));
+              largest_contours.add(filteredcontours.get(dx));
 
-                Imgproc.drawContours(orignal, largest_contours, -1, new Scalar(255, 255, 0), 1);
+              Imgproc.drawContours(orignal, largest_contours, -1, new Scalar(255, 255, 0), 1);
 
 
 
@@ -459,9 +459,9 @@ public class ClassImagePro extends Activity {
 
         }
 
-          //  Bitmap img2 = Bitmap.createBitmap(orignal.cols(), orignal.rows(), Bitmap.Config.ARGB_8888);
-        //    Utils.matToBitmap(orignal, img2);
-          //  i2.setImageBitmap(img2);
+            Bitmap img2 = Bitmap.createBitmap(orignal.cols(), orignal.rows(), Bitmap.Config.ARGB_8888);
+            Utils.matToBitmap(orignal, img2);
+          i2.setImageBitmap(img2);
             Toast.makeText(ClassImagePro.this, " image displayed ", Toast.LENGTH_SHORT).show();
 
 
@@ -2198,6 +2198,26 @@ try {
                 String vegname= longObject.yellow();
                 Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
 
+// for popup rates
+                int i = 0;
+                while (i < dbaccess.datahub.itemslist.size()) {
+                    if (dbaccess.datahub.itemslist.get(i).equalsIgnoreCase("Banana")) {
+                      String  item = dbaccess.datahub.itemslist.get(i);
+                      String  itemrate = dbaccess.datahub.itemsrates.get(i);
+                        //  Toast.makeText(context, "" + result[position] + " Costs " + itemrate, Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(this, popup.class);
+                        intent.putExtra("rate",itemrate);
+                        intent.putExtra("item", item);
+
+                        this.startActivity(intent);
+
+                        break;
+                    }
+                    i++;
+
+                }
+
+
                 Bitmap img2 = Bitmap.createBitmap(orignal.cols(), orignal.rows(), Bitmap.Config.ARGB_8888);
                 Utils.matToBitmap(orignal, img2);
                 i2.setImageBitmap(img2);
@@ -2230,7 +2250,7 @@ try {
     }
 
 
-
+/* for template matching but its not usefull for now
     public void run(int match_method) {
 
 
@@ -2247,7 +2267,7 @@ try {
         Core.normalize(result, result, 0, 1, Core.NORM_MINMAX, -1, new Mat());
 
         // / Localizing the best match with minMaxLoc
-        Core.MinMaxLocResult mmr = Core.minMaxLoc(result);
+        Core.MinMaxLocResult mmr = Core.minMaxLoc(result.clone());
 
         Point matchLoc;
         if (match_method == Imgproc.TM_SQDIFF || match_method == Imgproc.TM_SQDIFF_NORMED) {
@@ -2260,14 +2280,14 @@ try {
         Imgproc.rectangle(img, matchLoc, new Point(matchLoc.x + templ.cols(),
                 matchLoc.y + templ.rows()), new Scalar(0, 255, 0));
 
-        // Save the visualized detection.
 
-        Bitmap img2 = Bitmap.createBitmap(orignal.cols(), orignal.rows(), Bitmap.Config.ARGB_8888);
-        Utils.matToBitmap(orignal, img2);
+        // Save the visualized detection.
+        Bitmap img2 = Bitmap.createBitmap(img.cols(), img.rows(), Bitmap.Config.ARGB_8888);
+        Utils.matToBitmap(img, img2);
         i2.setImageBitmap(img2);
         Toast.makeText(ClassImagePro.this, " Detected feature", Toast.LENGTH_SHORT).show();
 
     }
 
-
+*/
 }

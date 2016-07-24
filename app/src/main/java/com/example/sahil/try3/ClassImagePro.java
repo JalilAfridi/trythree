@@ -45,6 +45,7 @@ public class ClassImagePro extends Activity {
     private static final int TAKE_PICTURE_REQUEST_B = 100;
     Spinner spinner ;
     ArrayList<String> items ;
+    ArrayList<String> detected_items = new ArrayList<>();
     int position1 = 0;
 
 
@@ -103,9 +104,14 @@ public class ClassImagePro extends Activity {
         blueeg.setVisibility(View.INVISIBLE);
 
 
-
+        final ArrayList<String> list = new ArrayList<String>();
+        list.add("carrot");
+        list.add("banana");
+        list.add("cucumber");
+        list.add("tomato");
+        list.add("eggplant");
         ArrayAdapter<String> adp1=new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1,dbaccess.datahub.getItemslist());
+                android.R.layout.simple_list_item_1,list);
         adp1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adp1);
         items = dbaccess.datahub.getItemslist();
@@ -254,20 +260,32 @@ public class ClassImagePro extends Activity {
                     public void onClick(View v) {
                         int banFlag=0;
                         int carrotFlag=0;
-                       if( items.get(position1).equalsIgnoreCase("banana")){
+                     //  if( list.get(position1).equalsIgnoreCase("banana")){
 
-                           banFlag = banana1();
-                       }else  if( items.get(position1).equalsIgnoreCase("carrot")){
+                            banana1();
+                     //  }else  if( list.get(position1).equalsIgnoreCase("carrot")){
 
 
-                           carrotFlag = carrott();
-                       }else if (items.get(position1).equalsIgnoreCase("potato")){
+                           carrott();
+                      // }else if (list.get(position1).equalsIgnoreCase("potato")){
 
                            int potatoFlag =  potato();
 
-                        }else {
-                           Toast.makeText(ClassImagePro.this, "select an item from the list", Toast.LENGTH_SHORT).show();
-                       }
+                       // }else if (list.get(position1).equalsIgnoreCase("tomato")){
+
+                            tomato();
+
+                     //  }else if (list.get(position1).equalsIgnoreCase("cucumber")){
+
+                           cucumber();
+
+                       //}else if (list.get(position1).equalsIgnoreCase("eggplant")){
+
+                           eggplant();
+
+                     //  }else {
+                          // Toast.makeText(ClassImagePro.this, "select an item from the list", Toast.LENGTH_SHORT).show();
+                      // }
 
 
 
@@ -275,7 +293,7 @@ public class ClassImagePro extends Activity {
                      int cucumberFlag =0; //cucumber();
 
 
-  //                      TextView t1 = (TextView)findViewById(R.id.rawdata);
+                       TextView t1 = (TextView)findViewById(R.id.rawdata);
 //                        t1.setText(" ban: " + banFlag+ " carrot: "+carrotFlag+" pumpkin "+pumpkinFlag+" cucumber "+cucumberFlag );
 
                     //  Intent i = new Intent(ClassImagePro.this,display_item.class);
@@ -284,9 +302,10 @@ public class ClassImagePro extends Activity {
                      //
 
                         //haarcascad();
-
-
-
+for(int i=0;i<detected_items.size();i++) {
+    t1.setText(t1.getText()+","+detected_items.get(i));
+}
+detected_items = new ArrayList<String>();
                     }
 
 
@@ -348,12 +367,13 @@ public class ClassImagePro extends Activity {
     }
 */
 
-             int banana1(){
+    int banana1(){
 
               try{
                     Mat fulhsv = copy.clone();
 
                     Imgproc.cvtColor(fulhsv, fulhsv, Imgproc.COLOR_BGR2HSV_FULL);
+
 
 
                     Scalar min  = new Scalar(10,80,150);
@@ -377,8 +397,8 @@ public class ClassImagePro extends Activity {
 
                     for(int i=0;i<contours.size();i++){
 
-                        if(Imgproc.contourArea(contours.get(i))>1000){
-                            filteredcontours.add(contours.get(i));
+                        if(Imgproc.contourArea(contours.get(i))>3000){
+                          filteredcontours.add(contours.get(i));
                         }
 
                     }
@@ -389,7 +409,7 @@ public class ClassImagePro extends Activity {
 
             TextView rawdata = (TextView) findViewById(R.id.rawdata);
 
-            rawdata.setText("confidance: " + confidancelevel+"y: "+dy);
+           // rawdata.setText("confidance: " + confidancelevel+"y: "+dy);
 
 
 
@@ -398,7 +418,7 @@ public class ClassImagePro extends Activity {
               firstcountour = contours.get(0);
             }catch (Exception e){
 
-                Toast.makeText(ClassImagePro.this, "Please take picture from different Angle", Toast.LENGTH_LONG).show();
+              //  Toast.makeText(ClassImagePro.this, "Please take picture from different Angle", Toast.LENGTH_LONG).show();
             }
             double areaofcontour = Imgproc.contourArea(firstcountour);
 
@@ -424,7 +444,7 @@ public class ClassImagePro extends Activity {
 
                 }
 
-                if(areaofcontour>1000&&ratio>1.3){
+                if(areaofcontour>3000&&ratio>1.2){
 
                     firstcountour = contours.get(i);
                     boundingrect = Imgproc.boundingRect(firstcountour);
@@ -434,7 +454,7 @@ public class ClassImagePro extends Activity {
 
                     db = Imgproc.arcLength(m2, true);
                     scolor="yellow";
-                    Toast.makeText(ClassImagePro.this, "yellow done", Toast.LENGTH_SHORT).show();
+
                     break;
                 }
 
@@ -462,42 +482,69 @@ public class ClassImagePro extends Activity {
             Bitmap img2 = Bitmap.createBitmap(orignal.cols(), orignal.rows(), Bitmap.Config.ARGB_8888);
             Utils.matToBitmap(orignal, img2);
           i2.setImageBitmap(img2);
-            Toast.makeText(ClassImagePro.this, " image displayed ", Toast.LENGTH_SHORT).show();
+          //  Toast.makeText(ClassImagePro.this, " image displayed ", Toast.LENGTH_SHORT).show();
 
 
 
         }catch(Exception e){
             e.printStackTrace();
-            Toast.makeText(ClassImagePro.this, "Excption", Toast.LENGTH_SHORT).show();
+         //   Toast.makeText(ClassImagePro.this, "Excption", Toast.LENGTH_SHORT).show();
         }
 
 
         return 0;
     }
-
     int carrott(){
 
         try{
             Mat fulhsv = copy.clone();
-            Imgproc.cvtColor(copy, fulhsv, Imgproc.COLOR_BGR2HSV_FULL);
+
+            Imgproc.cvtColor(fulhsv, fulhsv, Imgproc.COLOR_BGR2HSV_FULL);
 
 
-            Scalar min  = new Scalar(2,120,200);
-            Scalar max  = new Scalar(10,170,256);
-
+            Scalar min  = new Scalar(2,50,150);
+            Scalar max  = new Scalar(10,200,256);
 
             Core.inRange(fulhsv, min, max, fulhsv);
-            orignal = fulhsv.clone();
-            Imgproc.Canny(fulhsv, fulhsv, 200, 50);
+
+
             Imgproc.GaussianBlur(fulhsv, fulhsv, new Size(5, 5), 5);
+           Imgproc.Canny(fulhsv, fulhsv, 1, 400);
+            Imgproc.dilate(fulhsv,fulhsv,new Mat());
+            // Imgproc.Canny(fulhsv, fulhsv, 20, 50);
+
+            orignal = fulhsv.clone();
             List<MatOfPoint> contours = new ArrayList<MatOfPoint>();
+            List<MatOfPoint> filteredcontours = new ArrayList<MatOfPoint>();
+
             Imgproc.findContours(fulhsv, contours, new Mat(), Imgproc.RETR_LIST, Imgproc.CHAIN_APPROX_SIMPLE);
+
             MatOfPoint firstcountour=null;
+
+            for(int i=0;i<contours.size();i++){
+
+                if(Imgproc.contourArea(contours.get(i))>3000){
+                    filteredcontours.add(contours.get(i));
+                }
+
+            }
+
+
+            double confidancelevel = Imgproc.matchShapes(filteredcontours.get(dy),filteredcontours.get(dx) , Imgproc.CV_CONTOURS_MATCH_I3, 1);
+
+
+            TextView rawdata = (TextView) findViewById(R.id.rawdata);
+
+          //  rawdata.setText("confidance: " + confidancelevel+"y: "+dy);
+
+
+
+
             try {
                 firstcountour = contours.get(0);
             }catch (Exception e){
 
-                Toast.makeText(ClassImagePro.this, "Please take picture from different Angle", Toast.LENGTH_LONG).show();
+              //  Toast.makeText(ClassImagePro.this, "Please take picture from different Angle", Toast.LENGTH_LONG).show();
             }
             double areaofcontour = Imgproc.contourArea(firstcountour);
 
@@ -523,7 +570,7 @@ public class ClassImagePro extends Activity {
 
                 }
 
-                if(areaofcontour>1000&&ratio>1.3){
+                if(areaofcontour>3000&&ratio>1.2){
 
                     firstcountour = contours.get(i);
                     boundingrect = Imgproc.boundingRect(firstcountour);
@@ -533,7 +580,7 @@ public class ClassImagePro extends Activity {
 
                     db = Imgproc.arcLength(m2, true);
                     scolor="red";
-                    Toast.makeText(ClassImagePro.this, "red done", Toast.LENGTH_SHORT).show();
+
                     break;
                 }
 
@@ -541,13 +588,17 @@ public class ClassImagePro extends Activity {
             }
 
             finaltest(ratio,areaofcontour);
+
+
+
             try {
                 ArrayList<MatOfPoint> largest_contours = new ArrayList<MatOfPoint>();
-                largest_contours.add(firstcountour);
+                largest_contours.add(filteredcontours.get(dy));
+                largest_contours.add(filteredcontours.get(dx));
 
-
-                Imgproc.cvtColor(gray, gray, Imgproc.COLOR_BayerBG2RGB);
                 Imgproc.drawContours(orignal, largest_contours, -1, new Scalar(255, 255, 0), 1);
+
+
 
 
             }catch(Exception e){
@@ -557,18 +608,409 @@ public class ClassImagePro extends Activity {
             Bitmap img2 = Bitmap.createBitmap(orignal.cols(), orignal.rows(), Bitmap.Config.ARGB_8888);
             Utils.matToBitmap(orignal, img2);
             i2.setImageBitmap(img2);
-            Toast.makeText(ClassImagePro.this, " image displayed ", Toast.LENGTH_SHORT).show();
+          //  Toast.makeText(ClassImagePro.this, " image displayed ", Toast.LENGTH_SHORT).show();
 
 
 
         }catch(Exception e){
             e.printStackTrace();
-            Toast.makeText(ClassImagePro.this, "Excption", Toast.LENGTH_SHORT).show();
+           // Toast.makeText(ClassImagePro.this, "Excption", Toast.LENGTH_SHORT).show();
         }
 
 
         return 0;
     }
+    int tomato(){
+
+        try{
+            Mat fulhsv = copy.clone();
+
+
+            Imgproc.cvtColor(fulhsv, fulhsv, Imgproc.COLOR_BGR2HSV_FULL);
+
+
+            Scalar min  = new Scalar(2,50,100);
+            Scalar max  = new Scalar(20,256,200);
+
+            Core.inRange(fulhsv, min, max, fulhsv);
+
+
+            Imgproc.GaussianBlur(fulhsv, fulhsv, new Size(5, 5), 5);
+            Imgproc.Canny(fulhsv, fulhsv, 1, 400);
+            Imgproc.dilate(fulhsv,fulhsv,new Mat());
+            // Imgproc.Canny(fulhsv, fulhsv, 20, 50);
+
+            orignal = fulhsv.clone();
+            List<MatOfPoint> contours = new ArrayList<MatOfPoint>();
+            List<MatOfPoint> filteredcontours = new ArrayList<MatOfPoint>();
+
+            Imgproc.findContours(fulhsv, contours, new Mat(), Imgproc.RETR_LIST, Imgproc.CHAIN_APPROX_SIMPLE);
+
+            MatOfPoint firstcountour=null;
+
+            for(int i=0;i<contours.size();i++){
+
+                if(Imgproc.contourArea(contours.get(i))>3000){
+                    filteredcontours.add(contours.get(i));
+                }
+
+            }
+
+
+            double confidancelevel = Imgproc.matchShapes(filteredcontours.get(dy),filteredcontours.get(dx) , Imgproc.CV_CONTOURS_MATCH_I3, 1);
+
+
+            TextView rawdata = (TextView) findViewById(R.id.rawdata);
+
+          //  rawdata.setText("confidance: " + confidancelevel+"y: "+dy);
+
+
+
+
+            try {
+                firstcountour = contours.get(0);
+            }catch (Exception e){
+
+               // Toast.makeText(ClassImagePro.this, "Please take picture from different Angle", Toast.LENGTH_LONG).show();
+            }
+            double areaofcontour = Imgproc.contourArea(firstcountour);
+
+            Rect boundingrect=Imgproc.boundingRect(firstcountour);;
+            double wedth ;
+            double hieght;
+            double ratio = 0 ;
+            int counter =0;
+            double db=0.0;
+            //checking for banana only
+            for(int i=0;i<contours.size();i++){
+
+                areaofcontour = Imgproc.contourArea(contours.get(i));
+                wedth =   boundingrect.width;
+                hieght = boundingrect.height;
+
+
+                if(wedth>hieght){
+
+                    ratio=wedth/hieght;
+                }else{
+                    ratio=hieght/wedth;
+
+                }
+
+                if(areaofcontour>3000&&ratio<1.3){
+
+                    firstcountour = contours.get(i);
+                    boundingrect = Imgproc.boundingRect(firstcountour);
+
+                    MatOfPoint2f m2 = new MatOfPoint2f(firstcountour.toArray());
+
+
+                    db = Imgproc.arcLength(m2, true);
+                    scolor="red";
+
+                    break;
+                }
+
+
+            }
+
+            finaltest(ratio,areaofcontour);
+
+
+
+            try {
+                ArrayList<MatOfPoint> largest_contours = new ArrayList<MatOfPoint>();
+                largest_contours.add(filteredcontours.get(dy));
+                largest_contours.add(filteredcontours.get(dx));
+
+                Imgproc.drawContours(orignal, largest_contours, -1, new Scalar(255, 255, 0), 1);
+
+
+
+
+            }catch(Exception e){
+
+            }
+
+            Bitmap img2 = Bitmap.createBitmap(orignal.cols(), orignal.rows(), Bitmap.Config.ARGB_8888);
+            Utils.matToBitmap(orignal, img2);
+            i2.setImageBitmap(img2);
+           // Toast.makeText(ClassImagePro.this, " image displayed ", Toast.LENGTH_SHORT).show();
+
+
+
+        }catch(Exception e){
+            e.printStackTrace();
+          //  Toast.makeText(ClassImagePro.this, "Excption", Toast.LENGTH_SHORT).show();
+        }
+
+
+        return 0;
+    }
+    int cucumber(){
+
+        try{
+            Mat fulhsv = copy.clone();
+
+
+            Imgproc.cvtColor(fulhsv, fulhsv, Imgproc.COLOR_BGR2HSV_FULL);
+
+
+            Scalar min  = new Scalar(100,100,100);
+            Scalar max  = new Scalar(180,200,200);
+
+            Core.inRange(fulhsv, min, max, fulhsv);
+
+
+            Imgproc.GaussianBlur(fulhsv, fulhsv, new Size(5, 5), 5);
+            Imgproc.Canny(fulhsv, fulhsv, 1, 400);
+            Imgproc.dilate(fulhsv,fulhsv,new Mat());
+            // Imgproc.Canny(fulhsv, fulhsv, 20, 50);
+
+            orignal = fulhsv.clone();
+            List<MatOfPoint> contours = new ArrayList<MatOfPoint>();
+            List<MatOfPoint> filteredcontours = new ArrayList<MatOfPoint>();
+
+            Imgproc.findContours(fulhsv, contours, new Mat(), Imgproc.RETR_LIST, Imgproc.CHAIN_APPROX_SIMPLE);
+
+            MatOfPoint firstcountour=null;
+
+            for(int i=0;i<contours.size();i++){
+
+                if(Imgproc.contourArea(contours.get(i))>3000){
+                    filteredcontours.add(contours.get(i));
+                }
+
+            }
+
+
+            double confidancelevel = Imgproc.matchShapes(filteredcontours.get(dy),filteredcontours.get(dx) , Imgproc.CV_CONTOURS_MATCH_I3, 1);
+
+
+            TextView rawdata = (TextView) findViewById(R.id.rawdata);
+
+          double[] point =   copy.get(100,100);
+
+           // rawdata.setText("confidance: " + confidancelevel+"y: "+dy+" "+point[0]+","+point[1]+","+point[2]);
+
+
+
+
+            try {
+                firstcountour = contours.get(0);
+            }catch (Exception e){
+
+               // Toast.makeText(ClassImagePro.this, "Please take picture from different Angle", Toast.LENGTH_LONG).show();
+            }
+            double areaofcontour = Imgproc.contourArea(firstcountour);
+
+            Rect boundingrect=Imgproc.boundingRect(firstcountour);;
+            double wedth ;
+            double hieght;
+            double ratio = 0 ;
+            int counter =0;
+            double db=0.0;
+            //checking for banana only
+            for(int i=0;i<contours.size();i++){
+
+                areaofcontour = Imgproc.contourArea(contours.get(i));
+                wedth =   boundingrect.width;
+                hieght = boundingrect.height;
+
+
+                if(wedth>hieght){
+
+                    ratio=wedth/hieght;
+                }else{
+                    ratio=hieght/wedth;
+
+                }
+
+                if(areaofcontour>3000&&ratio>1.2){
+
+                    firstcountour = contours.get(i);
+                    boundingrect = Imgproc.boundingRect(firstcountour);
+
+                    MatOfPoint2f m2 = new MatOfPoint2f(firstcountour.toArray());
+
+
+                    db = Imgproc.arcLength(m2, true);
+                    scolor="darkgreen";
+
+                    break;
+                }
+
+
+            }
+
+            finaltest(ratio,areaofcontour);
+
+
+
+            try {
+                ArrayList<MatOfPoint> largest_contours = new ArrayList<MatOfPoint>();
+                largest_contours.add(filteredcontours.get(dy));
+                largest_contours.add(filteredcontours.get(dx));
+
+                Imgproc.drawContours(orignal, largest_contours, -1, new Scalar(255, 255, 0), 1);
+
+
+
+
+            }catch(Exception e){
+
+            }
+
+            Bitmap img2 = Bitmap.createBitmap(orignal.cols(), orignal.rows(), Bitmap.Config.ARGB_8888);
+            Utils.matToBitmap(orignal, img2);
+            i2.setImageBitmap(img2);
+           // Toast.makeText(ClassImagePro.this, " image displayed ", Toast.LENGTH_SHORT).show();
+
+
+
+        }catch(Exception e){
+            e.printStackTrace();
+          //  Toast.makeText(ClassImagePro.this, "Excption", Toast.LENGTH_SHORT).show();
+        }
+
+
+        return 0;
+    }
+    int eggplant(){
+
+        try{
+            Mat fulhsv = copy.clone();
+
+
+            Imgproc.cvtColor(fulhsv, fulhsv, Imgproc.COLOR_BGR2HSV_FULL);
+
+
+            Scalar min  = new Scalar(0,0,0);
+            Scalar max  = new Scalar(100 ,50,50);
+
+            Core.inRange(fulhsv, min, max, fulhsv);
+
+
+            Imgproc.GaussianBlur(fulhsv, fulhsv, new Size(5, 5), 5);
+            Imgproc.Canny(fulhsv, fulhsv, 1, 400);
+            Imgproc.dilate(fulhsv,fulhsv,new Mat());
+            // Imgproc.Canny(fulhsv, fulhsv, 20, 50);
+
+            orignal = fulhsv.clone();
+            List<MatOfPoint> contours = new ArrayList<MatOfPoint>();
+            List<MatOfPoint> filteredcontours = new ArrayList<MatOfPoint>();
+
+            Imgproc.findContours(fulhsv, contours, new Mat(), Imgproc.RETR_LIST, Imgproc.CHAIN_APPROX_SIMPLE);
+
+            MatOfPoint firstcountour=null;
+
+            for(int i=0;i<contours.size();i++){
+
+                if(Imgproc.contourArea(contours.get(i))>3000){
+                    filteredcontours.add(contours.get(i));
+                }
+
+            }
+
+
+            double confidancelevel = Imgproc.matchShapes(filteredcontours.get(dy),filteredcontours.get(dx) , Imgproc.CV_CONTOURS_MATCH_I3, 1);
+
+
+            TextView rawdata = (TextView) findViewById(R.id.rawdata);
+
+            double[] point =   copy.get(100,100);
+
+          //  rawdata.setText("confidance: " + confidancelevel+"y: "+dy+" "+point[0]+","+point[1]+","+point[2]);
+
+
+
+
+            try {
+                firstcountour = contours.get(0);
+            }catch (Exception e){
+
+               // Toast.makeText(ClassImagePro.this, "Please take picture from different Angle", Toast.LENGTH_LONG).show();
+            }
+            double areaofcontour = Imgproc.contourArea(firstcountour);
+
+            Rect boundingrect=Imgproc.boundingRect(firstcountour);;
+            double wedth ;
+            double hieght;
+            double ratio = 0 ;
+            int counter =0;
+            double db=0.0;
+            //checking for banana only
+            for(int i=0;i<contours.size();i++){
+
+                areaofcontour = Imgproc.contourArea(contours.get(i));
+                wedth =   boundingrect.width;
+                hieght = boundingrect.height;
+
+
+                if(wedth>hieght){
+
+                    ratio=wedth/hieght;
+                }else{
+                    ratio=hieght/wedth;
+
+                }
+
+                if(areaofcontour>3000&&ratio>1.2){
+
+                    firstcountour = contours.get(i);
+                    boundingrect = Imgproc.boundingRect(firstcountour);
+
+                    MatOfPoint2f m2 = new MatOfPoint2f(firstcountour.toArray());
+
+
+                    db = Imgproc.arcLength(m2, true);
+                    scolor="purple";
+
+                    break;
+                }
+
+
+            }
+
+            finaltest(ratio,areaofcontour);
+
+
+
+            try {
+                ArrayList<MatOfPoint> largest_contours = new ArrayList<MatOfPoint>();
+                largest_contours.add(filteredcontours.get(dy));
+                largest_contours.add(filteredcontours.get(dx));
+
+                Imgproc.drawContours(orignal, largest_contours, -1, new Scalar(255, 255, 0), 1);
+
+
+
+
+            }catch(Exception e){
+
+            }
+
+            Bitmap img2 = Bitmap.createBitmap(orignal.cols(), orignal.rows(), Bitmap.Config.ARGB_8888);
+            Utils.matToBitmap(orignal, img2);
+            i2.setImageBitmap(img2);
+         //   Toast.makeText(ClassImagePro.this, " image displayed ", Toast.LENGTH_SHORT).show();
+
+
+
+        }catch(Exception e){
+            e.printStackTrace();
+        //    Toast.makeText(ClassImagePro.this, "Excption", Toast.LENGTH_SHORT).show();
+        }
+
+
+        return 0;
+    }
+
+
+
+
+
+
     int bananaold(){
         TextView t1 = (TextView)findViewById(R.id.rawdata);
         t1.setText(" y: " + dy);
@@ -1567,249 +2009,7 @@ public class ClassImagePro extends Activity {
         }
         return -1;
     }
-    int cucumber(){
 
-        TextView t1 = (TextView)findViewById(R.id.rawdata);
-        t1.setText(" y: " + dy );
-        try {
-
-            //gray= Utils.loadResource(ClassImagePro.this, R.drawable.pveg, Imgcodecs.CV_LOAD_IMAGE_UNCHANGED);
-            gray = copy.clone();
-            Mat orignal = gray.clone();
-
-            // Imgproc.cvtColor(gray,gray,Imgproc.COLOR_BGR2RGB);
-            ///  double[] ar = colored.get(1,1);
-            ///  double[] black = {0,0,0};
-            // colored.put(1,1,black);
-                          /*  red =Double.parseDouble(redd.getText().toString());
-                            green =Double.parseDouble(greenn.getText().toString());
-                            blue =Double.parseDouble(bluee.getText().toString());
-                            //segment using color
-                          for(int i=1;i<colored.rows();i++){
-                                for(int y=1;y<colored.cols();y++){
-                                  if(colored.get(i,y)[0]>red&&colored.get(i,y)[1]>blue&&colored.get(i,y)[2]<green){
-                                        continue;
-                                    }
-                                    else {
-                                        double[] black = {0,0,0};
-                                        colored.put(i,y,black);
-                                    }
-
-                                }
-
-                            }
-                            */
-
-            //  Imgproc.pyrMeanShiftFiltering(gray,gray,dy,dept);
-
-
-
-            Imgproc.cvtColor(gray, gray, Imgproc.COLOR_BGR2GRAY);
-
-            //convert the image to black and white does (8 bit)
-            Imgproc.Canny(gray, gray, 200, 50);
-
-            //apply gaussian blur to smoothen lines of dots
-            Imgproc.GaussianBlur(gray, gray, new Size(5, 5), 5);
-            List<MatOfPoint> contours = new ArrayList<MatOfPoint>();
-            Imgproc.findContours(gray, contours, new Mat(), Imgproc.RETR_LIST, Imgproc.CHAIN_APPROX_SIMPLE);
-            MatOfPoint largCon = contours.get(dy);
-            Double areaofcontour = Imgproc.contourArea(contours.get(dy)) ;
-            Boolean convex =  true;
-
-
-            MatOfPoint2f m2 = new MatOfPoint2f(largCon.toArray());
-            double  db = Imgproc.arcLength(m2, true);
-
-            int px=0;int py=0;
-
-            Mat m = contours.get(dy).t();
-            double h = m.height();
-            double w = m.width();
-
-
-
-            Mat fulhsv =new Mat();
-            Imgproc.cvtColor(orignal,orignal,Imgproc.COLOR_BGR2RGB);
-            Imgproc.cvtColor(orignal, fulhsv, Imgproc.COLOR_RGB2HSV);
-
-            double[] hsv = fulhsv.get(py,px);
-
-
-            red =Double.parseDouble(redd.getText().toString());
-            green =Double.parseDouble(greenn.getText().toString());
-            blue =Double.parseDouble(bluee.getText().toString());
-            redg =Double.parseDouble(reddg.getText().toString());
-            greeng =Double.parseDouble(greenng.getText().toString());
-            blueg =Double.parseDouble(blueeg.getText().toString());
-
-
-            Scalar min  = new Scalar(2,120,210);
-            Scalar max  = new Scalar(10,170,256);
-
-
-            Core.inRange(fulhsv, min, max, fulhsv);
-
-
-
-
-
-
-/*
-            //segment using color
-            for(int i=1;i<fulhsv.rows();i++){
-                for(int y=1;y<fulhsv.cols();y++){
-                    if(fulhsv.get(i,y)[0]>2&&fulhsv.get(i,y)[0]<10&&fulhsv.get(i,y)[1]>120&&fulhsv.get(i,y)[1]<170&&fulhsv.get(i,y)[2]>210&&fulhsv.get(i,y)[2]<250){
-                        continue;
-                    }
-                    else {
-                        double[] black = {0,0,0};
-                        fulhsv.put(i,y,black);
-                    }
-
-                }
-
-            }
-*/
-
-
-            Imgproc.Canny(fulhsv, orignal, 200, 50);
-            //apply gaussian blur to smoothen lines of dots
-            Imgproc.GaussianBlur(orignal, orignal, new Size(5, 5), 5);
-            List<MatOfPoint> contours1 = new ArrayList<MatOfPoint>();
-            Imgproc.findContours(orignal, contours1, new Mat(), Imgproc.RETR_LIST, Imgproc.CHAIN_APPROX_SIMPLE);
-            MatOfPoint largCon1 = null;
-            Double areaofcontour1 = 0.0;
-
-
-            largCon1 = contours1.get(0);
-
-            areaofcontour1 = Imgproc.contourArea(contours1.get(0));
-
-            Boolean convex1 =  true;
-
-            Rect boundingrect=Imgproc.boundingRect(largCon1);;
-
-
-            // checking for gajar only
-            for(int i=0;i<contours1.size();i++){
-
-                areaofcontour1 = Imgproc.contourArea(contours1.get(i));
-                if(areaofcontour1>1000){
-
-                    largCon1 = contours1.get(i);
-                    boundingrect = Imgproc.boundingRect(largCon1);
-
-
-                    scolor="red";
-                    Toast.makeText(ClassImagePro.this, "red done", Toast.LENGTH_SHORT).show();
-                    break;
-                }
-
-
-
-            }
-
-            //  Toast.makeText(ClassImagePro.this, "h: "+hsv[0]+" s: "+hsv[1]+ " v: "+hsv[2], Toast.LENGTH_LONG).show();
-
-            double wedth =   boundingrect.width;
-            double hieght= boundingrect.height;
-
-            double ratio ;
-            if(wedth>hieght){
-                ratio=wedth/hieght;
-            }else{
-                ratio=hieght/wedth;
-            }
-
-            if(ratio<1.25&&areaofcontour1>1000){
-                Acircle circlobject = new Acircle();
-                if(scolor.equalsIgnoreCase("red")){
-                    String vegname= circlobject.red();
-                    Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
-
-
-                }else if(scolor.equalsIgnoreCase("green")){
-                    String vegname= circlobject.red();
-                    Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
-
-                }else if(scolor.equalsIgnoreCase("white")){
-                    String vegname= circlobject.red();
-                    Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
-
-                }else if(scolor.equalsIgnoreCase("brown")){
-                    String vegname= circlobject.red();
-                    Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
-
-                }else if(scolor.equalsIgnoreCase("whitegreen")){
-                    String vegname= circlobject.red();
-                    Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
-
-                }else {
-                    Toast.makeText(ClassImagePro.this, " something else ", Toast.LENGTH_SHORT).show();
-                }
-
-
-            }else if(ratio>1.3&&areaofcontour1>1000){
-
-                Blong longObject = new Blong();
-                if(scolor.equalsIgnoreCase("yellow")){
-                    String vegname= longObject.yellow();
-                    Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
-                }if(scolor.equalsIgnoreCase("red")){
-                    String vegname= longObject.red();
-                    Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
-                    return 1;
-
-                }else if(scolor.equalsIgnoreCase("lightgreen")){
-                    String vegname= longObject.red();
-                    Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
-
-                }else if(scolor.equalsIgnoreCase("darkgreen")){
-                    String vegname= longObject.red();
-                    Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
-
-                }else if(scolor.equalsIgnoreCase("purple")){
-                    String vegname= longObject.red();
-                    Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
-
-                }else {
-                    Toast.makeText(ClassImagePro.this, " something else ", Toast.LENGTH_SHORT).show();
-                }
-
-
-            }
-
-            // Mat matat30 = contours.get(30).t();
-
-
-            //   Mat m = contours.get(30).t();
-            //finding minimum & maximum xpoint and at a give y point
-            //double min=point[0].x,max=point[0].x;
-
-
-
-            t1.setText(t1.getText().toString() + " area: " + areaofcontour1 +" db: "+db+" h: "+h+ " w: "+w );
-            ArrayList<MatOfPoint> largest_contours = new ArrayList<MatOfPoint>();
-            largest_contours.add(largCon1);
-
-
-            Imgproc.cvtColor(gray, gray, Imgproc.COLOR_BayerBG2RGB);
-            Imgproc.drawContours(orignal, largest_contours, -1, new Scalar(255,255,0), 1);
-
-
-            Mat larg = gray;
-
-            Bitmap img2 = Bitmap.createBitmap(orignal.cols(), orignal.rows(), Bitmap.Config.ARGB_8888);
-            Utils.matToBitmap(orignal, img2);
-            i2.setImageBitmap(img2);
-
-        }catch(Exception e){
-
-            Toast.makeText(ClassImagePro.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
-        }
-        return -1;
-    }
   int potato(){
 
 
@@ -2164,42 +2364,48 @@ try {
 
     int finaltest(double ratio, double areaofcontour){
 
-        if(ratio<1.3&&areaofcontour>1000){
+        if(ratio<1.3&&areaofcontour>3000){
             Acircle circlobject = new Acircle();
             if(scolor.equalsIgnoreCase("red")){
                 String vegname= circlobject.red();
-                Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
+                detected_items.add(vegname);
+            //    Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
 
             }else if(scolor.equalsIgnoreCase("green")){
                 String vegname= circlobject.red();
-                Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
+                detected_items.add(vegname);
+              //  Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
 
             }else if(scolor.equalsIgnoreCase("white")){
                 String vegname= circlobject.red();
-                Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
+                detected_items.add(vegname);
+             //   Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
 
             }else if(scolor.equalsIgnoreCase("brown")){
                 String vegname= circlobject.red();
-                Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
+                detected_items.add(vegname);
+             //   Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
 
             }else if(scolor.equalsIgnoreCase("whitegreen")){
                 String vegname= circlobject.red();
-                Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
+                detected_items.add(vegname);
+              //  Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
 
             }else {
-                Toast.makeText(ClassImagePro.this, " something else ", Toast.LENGTH_SHORT).show();
+             //   Toast.makeText(ClassImagePro.this, " something else ", Toast.LENGTH_SHORT).show();
             }
 
 
-        }else if(ratio>1.3&&areaofcontour>1000){
+        }else if(ratio>1.2&&areaofcontour>3000){
 
             Blong longObject = new Blong();
             if(scolor.equalsIgnoreCase("yellow")){
                 String vegname= longObject.yellow();
-                Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
+                detected_items.add(vegname);
+              //  Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
 
 // for popup rates
-                int i = 0;
+           /*     int i = 0;
                 while (i < dbaccess.datahub.itemslist.size()) {
                     if (dbaccess.datahub.itemslist.get(i).equalsIgnoreCase("Banana")) {
                       String  item = dbaccess.datahub.itemslist.get(i);
@@ -2216,7 +2422,7 @@ try {
                     i++;
 
                 }
-
+*/
 
                 Bitmap img2 = Bitmap.createBitmap(orignal.cols(), orignal.rows(), Bitmap.Config.ARGB_8888);
                 Utils.matToBitmap(orignal, img2);
@@ -2225,22 +2431,26 @@ try {
                 return 1;
             }else if(scolor.equalsIgnoreCase("red")){
                 String vegname= longObject.red();
-                Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
+                detected_items.add(vegname);
+              //  Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
 
             }else if(scolor.equalsIgnoreCase("lightgreen")){
-                String vegname= longObject.red();
-                Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
+                String vegname= longObject.lightgreen();
+                detected_items.add(vegname);
+               // Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
 
             }else if(scolor.equalsIgnoreCase("darkgreen")){
-                String vegname= longObject.red();
-                Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
+                String vegname= longObject.darkgreen();
+                detected_items.add(vegname);
+              //  Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
 
             }else if(scolor.equalsIgnoreCase("purple")){
-                String vegname= longObject.red();
-                Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
+                String vegname= longObject.purple();
+                detected_items.add(vegname);
+             //   Toast.makeText(ClassImagePro.this, ""+vegname, Toast.LENGTH_SHORT).show();
 
             }else {
-                Toast.makeText(ClassImagePro.this, " something else! ", Toast.LENGTH_SHORT).show();
+               // Toast.makeText(ClassImagePro.this, " something else! ", Toast.LENGTH_SHORT).show();
             }
 
 

@@ -17,9 +17,10 @@ public class CustomAdapter extends BaseAdapter{
     String [] result;
     Context context;
     single dbAccess = single.getInstance();
-    int [] imageId;
-    private static LayoutInflater inflater=null;
 
+    int zeeshan =1;
+    private static LayoutInflater inflater=null;
+    int [] imageId;
     public CustomAdapter(Main2Activity mainActivity, String[] prgmNameList, int[] prgmImages) {
         // TODO Auto-generated constructor stub
         result=prgmNameList;

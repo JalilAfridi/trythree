@@ -17,4 +17,5 @@
     <string name="title_activity_main2">Item`s Grid View</string>
     <string name="title_activity_popup">New Price</string>
     <string name="title_activity_main_page">MainPage</string>
+    <string name="title_activity_tts">tts</string>
 </resources>

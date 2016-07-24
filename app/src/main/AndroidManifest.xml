@@ -13,7 +13,6 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".MainPage"
-
             android:theme="@android:style/Theme.Material.Light.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,7 +20,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".display_item"
             android:label="@string/title_activity_display_item"
@@ -37,7 +35,7 @@
         <activity
             android:name=".Main2Activity"
             android:label="@string/title_activity_main2"
-            android:theme="@android:style/Theme.Holo.DialogWhenLarge.NoActionBar"/>
+            android:theme="@android:style/Theme.Holo.DialogWhenLarge.NoActionBar" />
         <activity
             android:name=".popup"
             android:label="@string/title_activity_popup"
@@ -45,7 +43,8 @@
         <activity
             android:name=".ClassImagePro"
             android:theme="@android:style/Theme.Material.Light.NoActionBar">
-            android:label="@string/title_activity_main_page"></activity>
+            android:label="@string/title_activity_main_page">
+        </activity>
     </application>
 
 </manifest>

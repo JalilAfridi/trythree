@@ -28,9 +28,9 @@ public class Blong {
 
 
 
-    String    purple(){
+    String  purple(){
 
-        return "toor pateegaarr";
+        return "EggPlant";
     }
 
     String yellow (){
